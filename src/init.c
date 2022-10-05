@@ -6,20 +6,26 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:57 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/04 17:56:57 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/05 15:58:19 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-// t_data initData(char **envp)
-// {
-// 	t_data data;
+t_data *init_data(char **envp)
+{
+	t_data *data;
 
+	data = (t_data *)ft_calloc(sizeof(t_data), 1);
+	data->cmds = NULL;
+	data->envp = envp;
+	data->eout = STR_ERR;
+	data->in = STR_IN;
+	data->out = STR_OUT;
+	return data;
+}
 
-// }
-
-t_command *create_command(char **path, char *args, t_data *data)
+t_command *create_command(char *path, char **args, t_data *data)
 {
 	t_command *command;
 
@@ -31,8 +37,19 @@ t_command *create_command(char **path, char *args, t_data *data)
 	return (command);
 }
 
-void add_command(t_command **first, t_command *second)
+void add_command(t_command **first, t_command *to_add)
 {
-	(*first)->next = second;
-	second->next = NULL; 
+	t_command *temp;
+
+	if (!to_add)
+		return;
+	if(!(*first))
+	{
+		*first = to_add;
+		return ;
+	}
+	temp = *first;
+	while (temp->next)
+		temp = temp->next;
+	temp->next = to_add;
 }

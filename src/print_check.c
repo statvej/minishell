@@ -1,23 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_input.c                                       :+:      :+:    :+:   */
+/*   print_check.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/04 15:01:13 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/05 15:50:30 by fstaryk          ###   ########.fr       */
+/*   Created: 2022/10/05 15:53:45 by fstaryk           #+#    #+#             */
+/*   Updated: 2022/10/05 15:56:57 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "minishell.h"
 
-char	*read_input(void)
-{
-	char cwd[256];
-	// char *end;
-	// end = (fchar *)malloc(sizeof(char) * 256);
-	// end = ft_strrchr(cwd, '/');
-	getcwd(cwd, sizeof(cwd));
-    return readline(cwd);
+
+void mx_print_strarr(char **arr, const char *delim){
+	if(!arr || !delim){
+		return;
+	}
+	int exist = 0;
+	int i = 0;
+
+	for(; arr[i]; i++){
+		ft_putstr_fd(arr[i], 1);
+		ft_putstr_fd((char *)delim, 1);
+		exist = 1;
+	}
 }
