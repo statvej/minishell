@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:24:25 by gpinchuk          #+#    #+#             */
-/*   Updated: 2022/10/05 15:55:41 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/06 13:06:56 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,10 @@ typedef struct s_data
 	int eout;
 }t_data;
 
+//Destroy
+
+void	free_data(t_data *data);
+
 //Reading Input
 
 char	*read_input(void);
@@ -78,5 +82,6 @@ void		add_command(t_command **first, t_command *to_add);
 //PRINT CHECK
 
 void mx_print_strarr(char **arr, const char *delim);
+void print_data(t_data *data);
 
 #endif

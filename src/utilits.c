@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:36:32 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/05 15:49:47 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/06 13:30:42 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,12 @@ char ** add_elem_to_strarr(char **strarr, char *str)
 	char **ret;
 	
 	size = get_str_arr_len(strarr);
-	ret = (char **)ft_calloc(sizeof(char *), size + 2);// +2 for new elem and null
+	ret = (char **)malloc(sizeof(char *) * (size + 2));// +2 for new elem and null
 	strarr_cpy(ret, strarr);
 	ret[size] = ft_strdup(str);
-	free_strarr(strarr);
+	ret[size + 1] = NULL;
+	mx_print_strarr(ret, "|");
+	// free_strarr(strarr);
 	return ret;
 }
 
@@ -70,33 +72,3 @@ char ** add_elem_to_strarr(char **strarr, char *str)
 // 		return (NULL);
 // }
 
-void print_data(t_command *data)
-{
-	t_command	*temp;
-	int i;
-
-	if (!data)
-		{
-			perror("no linklist");
-			return ;
-		}
-	temp = data;
-	while (temp->next)
-	{
-		i = 0;
-		printf("%s, \n %d||%d||%d\n", temp->path,\
-		temp->data->in, temp->data->out, temp->data->eout);
-		while(temp->args[i])
-		{
-			printf("%s\n", temp->args[i]);
-			i++;
-		}
-		i = 0;
-		while(temp->data->envp[i])
-		{
-			printf("%s\n", temp->args[i]);
-			i++;
-		};
-		temp = temp->next;
-	}
-}

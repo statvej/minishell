@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:57 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/05 15:58:19 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/06 12:57:43 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_data *init_data(char **envp)
 {
 	t_data *data;
 
-	data = (t_data *)ft_calloc(sizeof(t_data), 1);
+	data = (t_data *)malloc(sizeof(t_data));
 	data->cmds = NULL;
 	data->envp = envp;
 	data->eout = STR_ERR;
@@ -29,7 +29,7 @@ t_command *create_command(char *path, char **args, t_data *data)
 {
 	t_command *command;
 
-	command = (t_command *)malloc(sizeof(t_command) * 1);
+	command = (t_command *)malloc(sizeof(t_command));
 	command->args = args;
 	command->path = path;
 	command->next = NULL;

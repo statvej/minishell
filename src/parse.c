@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:03:34 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/05 15:57:40 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/06 16:04:45 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,37 +47,116 @@
 // }
 
 
-t_data *parse(char *input, char **envp)
+// t_data *parse(char *input, char **envp)
+// {
+// 	char **split;
+// 	t_data	*data;
+// 	// t_command	*cmds;
+// 	char **strarr;
+// 	// int quotes;
+// 	int i;
+	
+	
+// 	data = init_data(envp);
+// 	split = ft_split(input, ' ');
+// 	// quotes = CLOSED;
+// 	i = 0;
+// 	strarr = NULL;
+// 	// mx_print_strarr(split, " ");
+// 	while(split[i])
+// 	{
+// 		if (!ft_strcmp(split[i], "|"))
+// 		{
+// 			add_command(&data->cmds, create_command(NULL, strarr, data));
+// 			free_strarr(strarr);
+// 			i++;
+// 			strarr = NULL;
+// 		}
+// 		strarr = add_elem_to_strarr(strarr, split[i]);
+// 		fprintf(stderr, "CHECK!\n");
+// 		mx_print_strarr(strarr, "\n");
+// 		i++;
+// 	}
+// 	//strarr = add_elem_to_strarr(strarr, split[i]);
+// 	add_command(&data->cmds, create_command(NULL, strarr, data));
+// 	// free_strarr(split);
+// 	// split = connect_quotes();
+	
+// 	return data;
+// }
+
+
+
+//here add recognition of where redirection goes
+int find_redir(char *input)
 {
-	char **split;
-	t_data	*data;
-	// t_command	*cmds;
-	char **strarr;
-	// int quotes;
 	int i;
-	
-	
-	data = init_data(envp);
-	split = ft_split(input, ' ');
-	// quotes = CLOSED;
+
 	i = 0;
-	strarr = NULL;
-	mx_print_strarr(split, "\n");
-	while(split[i])
+	while (input[i])
 	{
-		if (ft_strcmp(split[i], "|"))
+		if(input[i] == '<' || input[i] == '>')
 		{
-			add_command(&data->cmds, create_command(NULL, strarr, data));
-	fprintf(stderr, "CHECK!\n");
-			free_strarr(strarr);
-			strarr = NULL;
+			if(input[i + 1] == '<' || input[i + 1] == '>')
+				i++;
+			break;
 		}
-		strarr = add_elem_to_strarr(strarr, split[i]);
 		i++;
 	}
-	add_command(&data->cmds, create_command(NULL, strarr, data));
-	free_strarr(strarr);
-	// split = connect_quotes();
-	
+	return i;
+}
+
+int	get_cmd_ind(int *start, int *end, char *input)
+{
+	// int redir = -1;
+	int i;
+
+	i = *end + 1;
+	*start = i;//in future change for detecting redir	
+	while(input[i])
+	{
+		if (input[i] == '|')
+		{
+			*end = i;
+			break;
+		}
+		i++;
+	}
+	if(input[i])
+		return 1;
+	else
+	{
+		*end = i;	
+		return 0;
+	}
+}
+
+t_data *parse(char *input, char **envp)
+{
+	t_data	*data;
+	char *str;
+	int start;
+	int end;
+	int status;
+
+	start = 0;
+	end = -1;
+		
+	data = init_data(envp);
+	while(true)
+	{
+		status = get_cmd_ind(&start, &end, input);
+		fprintf(stderr, "IIII");
+		printf("start is %d end is %d status %d\n", start, end, status);
+		str = (char *)ft_calloc(sizeof(char) ,(end - start + 1));
+		ft_strncpy(str,(input + start), (end - start));
+		add_command(&data->cmds, create_command(NULL, ft_split(str, ' '), data)); 
+		free(str);
+		if(!status)
+			break;
+	}
+
 	return data;
 }
+
+
