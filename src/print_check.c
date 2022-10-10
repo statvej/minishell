@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 15:53:45 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/06 15:57:14 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/10 14:47:56 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,29 @@ void mx_print_strarr(char **arr, const char *delim){
 		ft_putstr_fd((char *)delim, 1);
 		exist = 1;
 	}
+}
+
+void print_token(t_token_list *token)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (token)
+	{
+		j = 0;
+		while (j < token->len)
+		{
+			fprintf(stderr, "%c", token->tok[j]);
+			j++;
+		}
+		fprintf(stderr, "\n");
+		fprintf(stderr, "token type :%d\n", token->type);
+		fprintf(stderr, "token lenth :%d\n", token->len);
+		i++;
+		token = token->next;
+	}
+	fprintf(stderr, "lenth of list is: %d\n", i);
 }
 
 void print_data(t_data *pdata)
@@ -48,8 +71,8 @@ void print_data(t_data *pdata)
 		perror("no com");
 		return ;	
 	}
-	printf("\n%d||%d||%d\n",\
-		data->in, data->out, data->eout);
+	printf("\n%d||%d||%d||%s||%s\n",\
+		data->in, data->out, data->eout, data->file_in, data->file_out);
 	while (data->cmds)
 	{
 		i = 0;

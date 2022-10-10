@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:24:25 by gpinchuk          #+#    #+#             */
-/*   Updated: 2022/10/06 13:06:56 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/10 17:24:38 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,39 @@
 # define OPENED 0
 # define CLOSED 1 
 
+# define TEXT 0
+# define SPACE 1
+# define PIPE 2
+# define INPUT 3
+# define OUTPUT_OVER 4
+# define HERE_DOC 5
+# define OUTPUT_APPEND 6
+# define DUP_QUOTES 7
+# define SING_QUOTES 8
+# define SEPARATOR 9
+
+typedef struct s_token_list
+{
+	int len;
+	char *tok;
+	int type;
+	struct s_token_list *next;
+	struct s_token_list *prev;
+}t_token_list;
+// typedef struct s_inputs
+// {
+// 	char *input;
+// 	struct s_inputs *next;
+// }t_inputs;
+
+
 typedef struct s_command
 {
 	char **args;
 	char *path;
+	//struct s_inputs *inp;
 	struct s_command *next;
+	
 	struct s_data *data;
 }t_command;
 
@@ -43,6 +71,9 @@ typedef struct s_data
 {
 	struct s_command   *cmds;
 	char **envp;
+	char *file_in;
+	char *file_out;
+	bool here_doc;
 	int in;
 	int out;
 	int eout;
@@ -56,6 +87,10 @@ void	free_data(t_data *data);
 
 char	*read_input(void);
 
+//LEXER
+
+t_token_list *lexer(char *input);
+
 //Parse
 
 t_data	*parse(char *input, char **envp);
@@ -63,6 +98,13 @@ t_data	*parse(char *input, char **envp);
 //INitialization
 
 t_data	*init_data(char **envp);
+
+//T0KEN STRUCT
+
+t_token_list	*create_token(int length, char *start, int type);
+void			add_token(t_token_list **first, t_token_list * to_add);
+
+void			print_token(t_token_list *token);
 
 //Destroy
 

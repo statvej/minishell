@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:57 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/06 12:57:43 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/10 18:34:30 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,38 @@ void add_command(t_command **first, t_command *to_add)
 	while (temp->next)
 		temp = temp->next;
 	temp->next = to_add;
+}
+
+t_token_list *create_token(int length, char *start, int type)
+{
+	t_token_list *token;
+	token = (t_token_list*)malloc(sizeof(t_token_list));
+// ft_strtrim(start, "\"\'");
+	token->len = length;
+	token->next = NULL;
+	token->prev = NULL;
+	token->tok = start;
+	token->type = type;
+	return token;
+}
+
+void add_token(t_token_list **first, t_token_list * to_add)
+{
+	t_token_list *temp;
+
+	if(!to_add)
+	{
+		perror("sho? ti sho tworish");	
+		return;
+	}
+	if(!(*first))
+	{
+		*first = to_add;
+		return;
+	}
+	temp = *first;
+	while (temp->next)
+		temp = temp->next;
+	temp->next = to_add;
+	to_add->prev = temp;
 }

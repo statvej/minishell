@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 14:53:37 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/06 15:40:18 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/10 15:39:56 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,19 @@
 int main(int argc, char **argv, char **envp)
 {
 	char *comnd_table;
-	t_data *data;
+	t_token_list *tokens;
     (void)argc;
 	(void)argv;
+	(void)envp;
 
 	while (true)
 	{
 		comnd_table = read_input();
-        data = parse(comnd_table, envp);
-		print_data(data);
+        tokens = lexer(comnd_table);
+		print_token(tokens);
 		//theExecutor();
 
-		free_data(data);
+		// free_data(data);
 	}
 	exit(1);
 }
