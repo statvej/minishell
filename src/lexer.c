@@ -6,30 +6,73 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 13:50:03 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/10 18:41:54 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/11 18:31:28 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"minishell.h"
+#include "minishell.h"
 
-int is_space(char c)
+// # define SEPARS {">>", "<<", ">", "<", "|", "(", ")", "&&", "||", NULL}
+// # define INDEX {11, 22, 33, 3,, 3,, 3,3,3 ,3,3,3,3,,3,}
+
+int extend_token_types(t_token_list **token)
 {
-	if (c== ' ' || (c >= 8 && c <= 14))
-		return 1;
-	else   
-		return 0;
+	int i;
+	t_token_list *temp;
+	char *separs[] = { ">" ,     "<",    ">>"      ,    "<<"   ,  "|"   , "(",         ")",        "&&"  ,       "||"};
+	int index[] = {OUTPUT_OVER, INPUT ,OUTPUT_APPEND, HERE_DOC, PIPE, PRNTH_LEFT, PRNTH_RIGHT, LOGICAL_AND, LOGICAL_OR};
+
+	i = 0;
+	temp = *token;
+	while (temp)
+	{
+		if(temp->type == PRNTH_RIGHT || temp->type == SEPAR_MORE ||\
+				temp->type == SEPAR_PIPE || temp->type == LOGICAL_AND ||\
+					 temp->type == PRNTH_LEFT)
+		{
+			i = 0;
+	
+			while (separs[i])
+			{
+				if(i == 9)
+				{
+					perror("unknown separator");
+					return -1;	
+				}
+				if(ft_strncmp(separs[i], temp->tok, temp->len) == 0)
+				{
+					// printf("temptok %.2s and index is %d\n", temp->tok, index[i]);
+					temp->type = index[i];		
+					break;;
+				}
+				i++;
+			}
+		}
+		temp = temp->next;
+	}	
+	return 1;
 }
+
 
 int get_type(char input){
 	if (input == ' ' || (input >= 8 && input <= 14))
 		return SPACE;
-	if(input == '\'')
+	if (input == '\'')
 		return SING_QUOTES;
 	if (input == '\"')
 		return DUP_QUOTES;
-	if (input == '|' || input == '>' || input == '<' || \
-		 input == '&' || input == '(' || input == ')')
-		return SEPARATOR;
+	if (input == '|')
+		return SEPAR_PIPE;
+	if (input == '>')
+		return SEPAR_MORE;
+	if (input == '<')
+		return SEPAR_MORE;
+	if(input == '&')
+		return LOGICAL_AND;
+	if (input == '(')
+		return PRNTH_LEFT;
+	if (input == ')')
+		return PRNTH_RIGHT;
 	return TEXT;
 }
 
@@ -94,10 +137,22 @@ t_token_list *lexer(char *input)
 			add_common_tok(&tokens, &input[i], &start, &type);
 		else if(type == TEXT && get_type(input[i]) != TEXT)
 			add_common_tok(&tokens, &input[i], &start, &type);
-		else if(type == SEPARATOR && get_type(input[i]) != SEPARATOR)
+		else if(type == SEPAR_LESS && get_type(input[i]) != SEPAR_LESS)
+			add_common_tok(&tokens, &input[i], &start, &type);
+		else if(type == SEPAR_MORE && get_type(input[i]) != SEPAR_MORE)
+			add_common_tok(&tokens, &input[i], &start, &type);
+		else if(type == SEPAR_PIPE && get_type(input[i]) != SEPAR_PIPE)
+			add_common_tok(&tokens, &input[i], &start, &type);
+		else if(type == PRNTH_LEFT && get_type(input[i]) != PRNTH_LEFT)
+			add_common_tok(&tokens, &input[i], &start, &type);
+		else if(type == PRNTH_RIGHT && get_type(input[i]) != PRNTH_RIGHT)
+			add_common_tok(&tokens, &input[i], &start, &type);
+		else if(type == LOGICAL_AND && get_type(input[i]) != LOGICAL_AND)
 			add_common_tok(&tokens, &input[i], &start, &type);
 		i++;
 	}
 	add_token(&tokens, create_token((int)(&input[i] - start), start, type));
+	extend_token_types(&tokens);
 	return tokens;
 }
+

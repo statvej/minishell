@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 14:53:37 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/10 15:39:56 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/11 17:57:49 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int main(int argc, char **argv, char **envp)
 	(void)argv;
 	(void)envp;
 
-	while (true)
+	while (1)
 	{
 		comnd_table = read_input();
         tokens = lexer(comnd_table);

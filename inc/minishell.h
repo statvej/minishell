@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:24:25 by gpinchuk          #+#    #+#             */
-/*   Updated: 2022/10/10 17:24:38 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/11 18:17:39 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include <stdio.h>
+# include <stdbool.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <signal.h>
@@ -40,7 +41,13 @@
 # define OUTPUT_APPEND 6
 # define DUP_QUOTES 7
 # define SING_QUOTES 8
-# define SEPARATOR 9
+# define PRNTH_LEFT 10
+# define PRNTH_RIGHT 11
+# define LOGICAL_AND 12
+# define LOGICAL_OR 13
+# define SEPAR_MORE 14
+# define SEPAR_LESS 15
+# define SEPAR_PIPE 16
 
 typedef struct s_token_list
 {
@@ -73,7 +80,7 @@ typedef struct s_data
 	char **envp;
 	char *file_in;
 	char *file_out;
-	bool here_doc;
+	int here_doc;
 	int in;
 	int out;
 	int eout;

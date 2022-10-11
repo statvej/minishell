@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:03:34 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/09 16:31:22 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/11 17:14:34 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,98 +87,98 @@
 
 
 
-//here add recognition of where redirection goes
-int find_redir(char *input, t_data *data)
-{
-	int i;
+// //here add recognition of where redirection goes
+// int find_redir(char *input, t_data *data)
+// {
+// 	int i;
 
-	i = 0;
-	while (input[i])
-	{
-		if(input[i] == '<' && input[i + 1] == '<')
-		{
-			data->file_in = ft_strndup(input, i);
-			return i + 2;
-		}
-		if(input[i] == '>' && input[i + 1] == '>')
-		{
-			data->file_in = ft_strndup(input, i);
-			return i + 2;
-		}
-		if(input[i] == '<')
-		{
-			data->file_in = ft_strndup(input, i);
-			return i + 1;
-		}
-		if(input[i] == '>')
-		{
-			data->file_in = ft_strndup(input, i);
-			return i + 1;
-		}
-		i++;
-	}
-	return 0;
-}
+// 	i = 0;
+// 	while (input[i])
+// 	{
+// 		if(input[i] == '<' && input[i + 1] == '<')
+// 		{
+// 			data->file_in = ft_strndup(input, i);
+// 			return i + 2;
+// 		}
+// 		if(input[i] == '>' && input[i + 1] == '>')
+// 		{
+// 			data->file_in = ft_strndup(input, i);
+// 			return i + 2;
+// 		}
+// 		if(input[i] == '<')
+// 		{
+// 			data->file_in = ft_strndup(input, i);
+// 			return i + 1;
+// 		}
+// 		if(input[i] == '>')
+// 		{
+// 			data->file_in = ft_strndup(input, i);
+// 			return i + 1;
+// 		}
+// 		i++;
+// 	}
+// 	return 0;
+// }
 
-// int size
+// // int size
 
-int	get_cmd_ind(int *start, int *end, char *input, t_data *data)
-{
-	// int redir = -1;
-	int i;
+// int	get_cmd_ind(int *start, int *end, char *input, t_data *data)
+// {
+// 	// int redir = -1;
+// 	int i;
 
-	i = *end + 1;
-	*start = find_redir(input, data);//in future change for detecting redir	
-	while(input[i])
-	{
-		if (input[i] == '"')
-			{
-				while (input[i] != '"')
-				{
+// 	i = *end + 1;
+// 	*start = find_redir(input, data);//in future change for detecting redir	
+// 	while(input[i])
+// 	{
+// 		if (input[i] == '"')
+// 			{
+// 				while (input[i] != '"')
+// 				{
 					
-				}
-			}
-		if (input[i] == '|')
-		{
-			*end = i;
-			break;
-		}
-		i++;
-	}
-	if(input[i])
-		return 1;
-	else
-	{
-		*end = i;	
-		return 0;
-	}
-}
+// 				}
+// 			}
+// 		if (input[i] == '|')
+// 		{
+// 			*end = i;
+// 			break;
+// 		}
+// 		i++;
+// 	}
+// 	if(input[i])
+// 		return 1;
+// 	else
+// 	{
+// 		*end = i;	
+// 		return 0;
+// 	}
+// }
 
-t_data *parse(char *input, char **envp)
-{
-	t_data	*data;
-	char *str;
-	int start;
-	int end;
-	int status;
+// t_data *parse(char *input, char **envp)
+// {
+// 	t_data	*data;
+// 	char *str;
+// 	int start;
+// 	int end;
+// 	int status;
 
-	start = 0;
-	end = -1;
+// 	start = 0;
+// 	end = -1;
 		
-	data = init_data(envp);
-	while(true)
-	{
-		status = get_cmd_ind(&start, &end, input, data);
-		while(status == 2)
-		str = (char *)ft_calloc(sizeof(char) ,(end - start + 1));
-		ft_strncpy(str,(input + start), (end - start));
-		add_command(&data->cmds, create_command(NULL, ft_split(str, ' '), data)); 
-		free(str);
-		if(!status)
-			break;
-	}
+// 	data = init_data(envp);
+// 	while(true)
+// 	{
+// 		status = get_cmd_ind(&start, &end, input, data);
+// 		while(status == 2)
+// 		str = (char *)ft_calloc(sizeof(char) ,(end - start + 1));
+// 		ft_strncpy(str,(input + start), (end - start));
+// 		add_command(&data->cmds, create_command(NULL, ft_split(str, ' '), data)); 
+// 		free(str);
+// 		if(!status)
+// 			break;
+// 	}
 
-	return data;
-}
+// 	return data;
+// }
 
 
