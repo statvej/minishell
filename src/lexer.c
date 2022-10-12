@@ -6,14 +6,11 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 13:50:03 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/11 18:31:28 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/12 17:26:06 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-// # define SEPARS {">>", "<<", ">", "<", "|", "(", ")", "&&", "||", NULL}
-// # define INDEX {11, 22, 33, 3,, 3,, 3,3,3 ,3,3,3,3,,3,}
+#include "../inc/minishell.h"
 
 int extend_token_types(t_token_list **token)
 {

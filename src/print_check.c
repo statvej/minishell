@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 15:53:45 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/10 14:47:56 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/12 17:26:01 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,38 +50,3 @@ void print_token(t_token_list *token)
 	fprintf(stderr, "lenth of list is: %d\n", i);
 }
 
-void print_data(t_data *pdata)
-{
-	int i;
-	t_data* data;
-
-	data = pdata;
-	if (!data)
-	{
-		perror("no linklist");
-		return ;
-	}
-	// while(data->envp[i])
-	// {
-	// 	printf("%s\n", data->envp[i]);
-	// 	i++;
-	// }
-	if (!data->cmds)
-	{
-		perror("no com");
-		return ;	
-	}
-	printf("\n%d||%d||%d||%s||%s\n",\
-		data->in, data->out, data->eout, data->file_in, data->file_out);
-	while (data->cmds)
-	{
-		i = 0;
-		printf("Path is %s\n", data->cmds->path);
-		while(data->cmds->args[i])
-		{
-			printf("%s\n", data->cmds->args[i]);
-			i++;
-		}
-		data->cmds = data->cmds->next;
-	}
-}

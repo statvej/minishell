@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:24:25 by gpinchuk          #+#    #+#             */
-/*   Updated: 2022/10/11 18:17:39 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/12 17:58:17 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,38 +57,41 @@ typedef struct s_token_list
 	struct s_token_list *next;
 	struct s_token_list *prev;
 }t_token_list;
-// typedef struct s_inputs
-// {
-// 	char *input;
-// 	struct s_inputs *next;
-// }t_inputs;
 
-
-typedef struct s_command
+typedef struct s_cmd_group
 {
 	char **args;
-	char *path;
-	//struct s_inputs *inp;
-	struct s_command *next;
-	
-	struct s_data *data;
-}t_command;
+	int* in;
+	int in_size;
+	int* out;
+	int out_size;
+}t_cmd_group;
 
-typedef struct s_data
+typedef struct s_pipe_group
 {
-	struct s_command   *cmds;
+	t_cmd_group *cmd_group;
+	t_token_list *tok_list;
+	int tok_len;
+	struct s_pipe_group *next;
+}t_pipe_group;
+
+typedef struct s_log_group
+{
+	t_pipe_group *pipe_group;
+	t_token_list *tok_list;
+	int tok_len;
+	struct s_log_group *next;
+}t_log_group;
+
+typedef struct s_data	
+{
+	t_log_group *log_grp;
 	char **envp;
-	char *file_in;
-	char *file_out;
-	int here_doc;
-	int in;
-	int out;
-	int eout;
 }t_data;
 
 //Destroy
 
-void	free_data(t_data *data);
+// void	free_data(t_data *data);
 
 //Reading Input
 
@@ -100,16 +103,18 @@ t_token_list *lexer(char *input);
 
 //Parse
 
-t_data	*parse(char *input, char **envp);
+t_data	*parse(t_token_list ** global, char **env);
+// t_data	*parse(char *input, char **envp);
 
-//INitialization
+// //INitialization
 
-t_data	*init_data(char **envp);
+// t_data	*init_data(char **envp);
 
 //T0KEN STRUCT
 
 t_token_list	*create_token(int length, char *start, int type);
 void			add_token(t_token_list **first, t_token_list * to_add);
+t_token_list *token_delim_logic(t_token_list **global, int *len);
 
 void			print_token(t_token_list *token);
 
@@ -125,12 +130,12 @@ char ** add_elem_to_strarr(char **strarr, char *str);
 
 //Command struct
 
-t_command	*create_command(char *path, char **args, t_data *data);
-void		add_command(t_command **first, t_command *to_add);
+// t_command	*create_command(char *path, char **args, t_data *data);
+// void		add_command(t_command **first, t_command *to_add);
 
 //PRINT CHECK
 
 void mx_print_strarr(char **arr, const char *delim);
-void print_data(t_data *data);
+// void print_data(t_data *data);
 
 #endif
