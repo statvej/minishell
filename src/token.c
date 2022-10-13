@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:57 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/12 18:04:52 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/13 16:46:52 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,18 +56,58 @@ t_token_list *token_delim_logic(t_token_list **global, int *len)
 	i = 0;
 	if((*global)->next == NULL)
 		return NULL;
-
 	while((*global)->type != LOGICAL_OR && (*global)->type != LOGICAL_AND)
 	{
+		// printf("%s\n",(*global)->tok);
 		if ((*global)->next == NULL)
 		{
 			i++;
+			*len = i;
 			return temp;
 		}
 		i++;
 		*global = (*global)->next;
 	}
 	*len = i;
-	*global = (*global)->next->next;
+	//printf("len is asigning to %d\n", i);
+	if(!(*global)->next)
+		{
+			perror ("syntax error");
+			return 0;
+		}
+	*global = (*global)->next;
+	// printf("\n");
 	return temp;
+}
+
+t_token_list *token_delim_pipe(t_token_list *global, int log_len, int *pipe_len)
+{
+	t_token_list *temp;
+	temp = global;
+	int i;
+	//static int j;
+
+	i = 0;
+	if(global->next == NULL)
+		return NULL;
+	while(global->type != PIPE)
+	{
+		fprintf(stderr, "%s\n", global->tok);
+		if (i == log_len)
+		{
+			*pipe_len = i;
+			return temp;
+		}
+		i++;
+		global = global->next;
+	}
+	*pipe_len = i;
+	global = global->next;
+	return temp;
+}
+
+void restore_tok_list(t_token_list **global)
+{
+	while ((*global)->prev)
+		(*global) = (*global)->prev;
 }

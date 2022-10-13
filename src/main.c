@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 14:53:37 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/12 18:00:35 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/13 13:12:56 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int main(int argc, char **argv, char **envp)
 	{
 		comnd_table = read_input();
         tokens = lexer(comnd_table);
-		print_token(tokens);
+		//print_token(tokens);
 		parse(&tokens, envp);
 		//theExecutor();
 
