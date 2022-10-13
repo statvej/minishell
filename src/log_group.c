@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 17:36:08 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/13 16:48:39 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/13 19:05:12 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,23 @@ t_log_group *create_log_group(t_token_list **global)
 {
 	t_log_group *ret;
 	int len;
+	int needs;
 	t_token_list *temp_tok;
 
 	ret = NULL;
-	temp_tok = token_delim_logic(global, &len);
+	
+	temp_tok = token_delim_logic(global, &len, &needs);
 	// add_log_link(&ret, create_log_link(temp_tok, len));
     while (temp_tok)
     {
-		add_log_link(&ret, create_log_link(temp_tok, len));
-        temp_tok = token_delim_logic(global, &len);
+		add_log_link(&ret, create_log_link(temp_tok, len, needs));
+        temp_tok = token_delim_logic(global, &len, &needs);
     }
 	restore_tok_list(global);
 	return ret;
 }
 
-t_log_group *create_log_link(t_token_list *tok_list, int tok_len)
+t_log_group *create_log_link(t_token_list *tok_list, int tok_len, int needs)
 {
 	t_log_group *log_link;
 
@@ -39,6 +41,7 @@ t_log_group *create_log_link(t_token_list *tok_list, int tok_len)
 	log_link->tok_len = tok_len;
 	log_link->next = NULL;
     log_link->pipe_group = NULL;
+	log_link->needs = needs;
 	return (log_link);
 }
 

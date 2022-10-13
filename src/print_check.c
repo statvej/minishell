@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 15:53:45 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/13 13:30:45 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/13 19:28:32 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,22 @@ void print_ntoken(t_token_list *token, int n)
 		i++;
 		token = token->next;
 	}
-	fprintf(stderr, "lenth of list is: %d\n", i);
+	fprintf(stderr, "lenth of list is: %d\n\n", i);
+}
+
+void print_pipe_group(t_pipe_group *pipe_grp)
+{
+	int i;
+
+	i = 0;
+	printf("\n\tpipe groups incoming\n\n");
+	while (pipe_grp)
+	{
+		printf("pipe link #%d\n", i);
+		print_ntoken(pipe_grp->tok_list, pipe_grp->tok_len);
+		pipe_grp = pipe_grp->next;
+		i++;
+	}	
 }
 
 void print_logic_grp(t_log_group *log_grp)
@@ -83,8 +98,12 @@ void print_logic_grp(t_log_group *log_grp)
 	while (log_grp)
 	{
 		i = 0;
-		printf("%d\n", log_grp->tok_len);
+		printf("tokens in group %d\n", log_grp->tok_len);
 		print_ntoken(log_grp->tok_list, log_grp->tok_len);
+		printf("\n");
+		printf("group needs %d", log_grp->needs);
+		printf("\n");
+		print_pipe_group(log_grp->pipe_group);
 		printf("\n");
 		log_grp = log_grp->next;
 	}

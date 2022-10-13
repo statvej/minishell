@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:24:25 by gpinchuk          #+#    #+#             */
-/*   Updated: 2022/10/13 16:44:08 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/13 19:41:44 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,15 +116,19 @@ t_data	*parse(t_token_list ** global, char **env);
 
 t_token_list	*create_token(int length, char *start, int type);
 void			add_token(t_token_list **first, t_token_list * to_add);
-t_token_list *token_delim_logic(t_token_list **global, int *len);
+t_token_list *token_delim_logic(t_token_list **global, int *len, int *needs);
 t_token_list *token_delim_pipe(t_token_list *global, int log_len, int *pipe_len);
-void			print_token(t_token_list *token);
 
 //LOG GROUP STRUCT
 
 t_log_group *create_log_group(t_token_list **global);
-t_log_group *create_log_link(t_token_list *tok_list, int tok_len);
+t_log_group *create_log_link(t_token_list *tok_list, int tok_len, int needs);
 void add_log_link(t_log_group **first, t_log_group *to_add);
+
+
+//PIPE STRUCT
+
+void create_pipe_group(t_log_group *log_grp);
 
 //Destroy
 
@@ -146,6 +150,9 @@ void restore_tok_list(t_token_list **global);
 
 void mx_print_strarr(char **arr, const char *delim);
 void print_logic_grp(t_log_group *log_grp);
+void print_ntoken(t_token_list *token, int n);
+void			print_token(t_token_list *token);
+
 // void print_data(t_data *data);
 
 #endif

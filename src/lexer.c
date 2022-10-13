@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 13:50:03 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/12 17:26:06 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/13 18:55:23 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int extend_token_types(t_token_list **token)
 {
 	int i;
 	t_token_list *temp;
-	char *separs[] = { ">" ,     "<",    ">>"      ,    "<<"   ,  "|"   , "(",         ")",        "&&"  ,       "||"};
+	char *separs[] = { ">", "<", ">>", "<<", "|"   , "(",         ")",        "&&"  ,       "||"};
 	int index[] = {OUTPUT_OVER, INPUT ,OUTPUT_APPEND, HERE_DOC, PIPE, PRNTH_LEFT, PRNTH_RIGHT, LOGICAL_AND, LOGICAL_OR};
 
 	i = 0;
