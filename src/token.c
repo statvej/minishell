@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:57 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/13 20:00:17 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/17 15:03:37 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,42 +80,47 @@ t_token_list *token_delim_logic(t_token_list **global, int *len, int *needs)
 			return 0;
 		}
 	*global = (*global)->next;
-	return ``;
+	return temp;
 }
 //Before pipe it leaves one extra space
 t_token_list *token_delim_pipe(t_token_list *global, int log_len, int *pipe_len)
 {
-	static t_token_list *temp;
-	static int res;
+	static int count;
+	int i;
 	t_token_list *ret;
-	static int i;
 
-	if(res == 1){
-		res = 0;	
+
+	static t_token_list *save;
+	if(save != global){
+		save = global;
+		print_ntoken(save, log_len, "\t\t\t");
+		printf("\n\n");
+	}
+
+	
+	if (count >= log_len - 1)
+	{
+		count = 0;
 		return NULL;
 	}
-	if(!temp)
-		temp = global;
-	ret = temp;
-	// i = 0;
-	// printf("%d\n", log_len);
-	while (temp->type != PIPE && temp)
+	i = 0;
+	while (i < count)
 	{
-		// printf("%s\n", temp->tok);
-		if(i == log_len - 1)
-		{
-			res = 1;
-			i = 0;
-			*pipe_len = i;
-			temp = temp->next;
-			return ret;
-		}
 		i++;
-		temp = temp->next;
+		global = global->next;
 	}
-	temp = temp->next;
-	*pipe_len = i;
-	// printf("\n");
+	ret = global;
+	i = 0;
+	while (global->type != PIPE)
+	{
+		if(count >= log_len - 1)
+			return ret;
+		global = global->next;
+		i++;
+		count++;
+	}
+	count++;
+	*pipe_len = --i;
 	return ret;
 }
 

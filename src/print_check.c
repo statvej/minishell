@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 15:53:45 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/13 19:28:32 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/17 14:37:57 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void print_token(t_token_list *token)
 	fprintf(stderr, "lenth of list is: %d\n", i);
 }
 
-void print_ntoken(t_token_list *token, int n)
+void print_ntoken(t_token_list *token, int n, char * depth)
 {
 	int i;
 	int j;
@@ -59,18 +59,19 @@ void print_ntoken(t_token_list *token, int n)
 	while (token && i < n)
 	{
 		j = 0;
+		fprintf(stderr, "%s", depth);
 		while (j < token->len)
 		{
 			fprintf(stderr, "%c", token->tok[j]);
 			j++;
 		}
 		fprintf(stderr, "\n");
-		fprintf(stderr, "token type :%d\n", token->type);
-		fprintf(stderr, "token lenth :%d\n", token->len);
+		fprintf(stderr, "%stoken type :%d\n", depth, token->type);
+		fprintf(stderr, "%stoken lenth :%d\n\n", depth, token->len);
 		i++;
 		token = token->next;
 	}
-	fprintf(stderr, "lenth of list is: %d\n\n", i);
+	fprintf(stderr, "\n%slenth of list is: %d\n\n", depth, i);
 }
 
 void print_pipe_group(t_pipe_group *pipe_grp)
@@ -82,7 +83,7 @@ void print_pipe_group(t_pipe_group *pipe_grp)
 	while (pipe_grp)
 	{
 		printf("pipe link #%d\n", i);
-		print_ntoken(pipe_grp->tok_list, pipe_grp->tok_len);
+		print_ntoken(pipe_grp->tok_list, pipe_grp->tok_len, "\t");
 		pipe_grp = pipe_grp->next;
 		i++;
 	}	
@@ -99,7 +100,7 @@ void print_logic_grp(t_log_group *log_grp)
 	{
 		i = 0;
 		printf("tokens in group %d\n", log_grp->tok_len);
-		print_ntoken(log_grp->tok_list, log_grp->tok_len);
+		// print_ntoken(log_grp->tok_list, log_grp->tok_len);
 		printf("\n");
 		printf("group needs %d", log_grp->needs);
 		printf("\n");
