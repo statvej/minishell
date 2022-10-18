@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 17:36:08 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/13 19:05:12 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/18 16:44:33 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ t_log_group *create_log_link(t_token_list *tok_list, int tok_len, int needs)
 	log_link->tok_list = tok_list;
 	log_link->tok_len = tok_len;
 	log_link->next = NULL;
+	log_link->prev = NULL;
     log_link->pipe_group = NULL;
 	log_link->needs = needs;
 	return (log_link);
@@ -60,4 +61,5 @@ void add_log_link(t_log_group **first, t_log_group *to_add)
 	while (temp->next)
 		temp = temp->next;
 	temp->next = to_add;
+	to_add->prev = temp;
 }

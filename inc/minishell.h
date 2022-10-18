@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:24:25 by gpinchuk          #+#    #+#             */
-/*   Updated: 2022/10/17 15:06:41 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/18 17:03:11 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,17 @@
 # include <stdbool.h>
 # include "../libft/libft.h"
 
+//DEFINITION OF STANDART FDs
+
 # define STR_IN 0
 # define STR_OUT 1
 # define STR_ERR 2
+
+
 # define OPENED 0
 # define CLOSED 1 
+
+//TOKEN TYPES
 
 # define TEXT 0
 # define SPACE 1
@@ -48,6 +54,7 @@
 # define SEPAR_MORE 14
 # define SEPAR_LESS 15
 # define SEPAR_PIPE 16
+# define EXTENDED 17
 
 typedef struct s_token_list
 {
@@ -60,6 +67,7 @@ typedef struct s_token_list
 
 typedef struct s_cmd_group
 {
+	char **pos_paths;
 	char **args;
 	int* in;
 	int in_size;
@@ -82,6 +90,7 @@ typedef struct s_log_group
 	int tok_len;
 	int needs;
 	int ret;
+	struct s_log_group *prev;
 	struct s_log_group *next;
 }t_log_group;
 
@@ -107,6 +116,9 @@ t_token_list *lexer(char *input);
 
 t_data	*parse(t_token_list ** global, char **env);
 // t_data	*parse(char *input, char **envp);
+
+//Quotes
+void open_extantion_quotes(t_log_group *log_grp, t_data *data);
 
 // //INitialization
 
@@ -140,6 +152,8 @@ int		get_str_arr_len(char **strarr);
 char	*ft_strjoin_del1(char const *s1, char const *s2);
 char ** add_elem_to_strarr(char **strarr, char *str);
 void restore_tok_list(t_token_list **global);
+char	*ft_strnnjoin(char const *s1, int n1, char const *s2, int n2);
+void strtoknjoin(t_token_list **start, int lenth);
 
 //Command struct
 

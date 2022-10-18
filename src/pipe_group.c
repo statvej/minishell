@@ -11,6 +11,7 @@ t_pipe_group *create_pipe_link(t_token_list *tok_list, int tok_len)
 	pipe_grp->tok_len = tok_len;
 	pipe_grp->next = NULL;
     pipe_grp->cmd_group = NULL;
+
 	return (pipe_grp);
 }
 

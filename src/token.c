@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:57 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/17 15:03:37 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/18 17:22:55 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,12 @@ t_token_list *token_delim_pipe(t_token_list *global, int log_len, int *pipe_len)
 	t_token_list *ret;
 
 
-	static t_token_list *save;
-	if(save != global){
-		save = global;
-		print_ntoken(save, log_len, "\t\t\t");
-		printf("\n\n");
-	}
+	// static t_token_list *save;
+	// if(save != global){
+	// 	save = global;
+	// 	print_ntoken(save, log_len, "\t\t\t");
+	// 	printf("\n\n");
+	// }
 
 	
 	if (count >= log_len - 1)
