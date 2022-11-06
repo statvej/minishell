@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:57 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/18 17:22:55 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/06 13:57:38 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 t_token_list *create_token(int length, char *start, int type)
 {
 	t_token_list *token;
+
+	if(!length && !(type == DUP_QUOTES || type == SING_QUOTES))
+		return NULL;
 	token = (t_token_list*)malloc(sizeof(t_token_list));
 // ft_strtrim(start, "\"\'");
 	token->len = length;
@@ -32,7 +35,7 @@ void add_token(t_token_list **first, t_token_list * to_add)
 
 	if(!to_add)
 	{
-		perror("sho? ti sho tworish");	
+		// perror("sho? ti sho tworish");	
 		return;
 	}
 	if(!(*first))
@@ -52,9 +55,22 @@ t_token_list *token_delim_logic(t_token_list **global, int *len, int *needs)
 	t_token_list *temp;
 	temp = *global;
 	int i;
+	static int solo;
 
 	i = 0;
-	if((*global)->next == NULL)
+	if(!global || solo == 1)
+	{
+		solo = 0;
+		return NULL;
+	}
+	if((*global)->next == NULL && (*global)->prev == NULL)
+	{
+		*len = 1;
+		*needs = -1;
+		solo = 1;
+		return temp;
+	}
+	else if((*global)->next == NULL)
 		return NULL;
 	if ((*global)->prev == NULL)
 		*needs = -1;
@@ -82,6 +98,7 @@ t_token_list *token_delim_logic(t_token_list **global, int *len, int *needs)
 	*global = (*global)->next;
 	return temp;
 }
+
 //Before pipe it leaves one extra space
 t_token_list *token_delim_pipe(t_token_list *global, int log_len, int *pipe_len)
 {
@@ -89,37 +106,42 @@ t_token_list *token_delim_pipe(t_token_list *global, int log_len, int *pipe_len)
 	int i;
 	t_token_list *ret;
 
-
-	// static t_token_list *save;
-	// if(save != global){
-	// 	save = global;
-	// 	print_ntoken(save, log_len, "\t\t\t");
-	// 	printf("\n\n");
-	// }
-
-	
-	if (count >= log_len - 1)
-	{
-		count = 0;
+	if(!global)
 		return NULL;
-	}
-	i = 0;
+		
+	i = 1;
+	//coming to the pointed from last itteration 
 	while (i < count)
 	{
 		i++;
 		global = global->next;
 	}
 	ret = global;
-	i = 0;
+	
+	if (count >= log_len)
+	{
+		count = 0;
+		return NULL;
+	}
+	else if(count <= 1)
+		count = 1;
+		
+	i = 1;
 	while (global->type != PIPE)
 	{
-		if(count >= log_len - 1)
-			return ret;
 		global = global->next;
 		i++;
 		count++;
+		if(count >= log_len)
+		{
+			//for the end of log_group
+			*pipe_len = i;
+			return ret;
+		}
 	}
+	//count ++ for junping over "|"
 	count++;
+	//--len for not counting "|" as we already encountered it
 	*pipe_len = --i;
 	return ret;
 }

@@ -1,11 +1,11 @@
 NAME = minishell
 LIB = libft.a
 SRC = src
-INC = inc
+INC = inc	
 LIB_F = libft
 OBJ = obj
 CC := gcc
-CFLAGS := -Wall -Wextra -Werror -I $(INC)
+CFLAGS := -Wall -Wextra -Werror -I$(INC) -g
 SRC_F = $(wildcard $(SRC)/*.c)
 OBJ_F = $(SRC_F:.c=.o)
 OBJS = $(subst $(SRC),$(OBJ),$(OBJ_F))

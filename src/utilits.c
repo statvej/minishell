@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:36:32 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/18 17:05:07 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/06 18:23:28 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	*ft_strnnjoin(char const *s1, int n1, char const *s2, int n2)
 		if (!tmp)
 			return (NULL);
 		tmp = ft_strncpy(tmp, (char *)s1, n1);
-		ft_strlcat(tmp, (char *)s2, n1 + n2);
+		ft_strlcat(tmp, (char *)s2, n1 + n2 + 1);
 		return tmp;
 	}
 	else if (s1 == NULL && s2 != NULL)
@@ -82,21 +82,38 @@ void strtoknjoin(t_token_list **start, int lenth)
 	t_token_list *ret;
 	char *elem;
 
-	temp = (*start)->prev;
+	temp = NULL;
+	elem = NULL;
+	if((*start)->prev)
+		temp = (*start)->prev;
 	i = 0;
-	while(i < lenth)
+
+	if(!(lenth == 0 && (*start)->len == 0))
 	{
-		printf("%d\n", lenth);
-		elem = ft_strnnjoin(elem, ft_strlen(elem), (*start)->tok, (*start)->len);
-		if((*start)->type == EXTENDED)
-			free((*start)->tok);
-		temp_free = (*start)->next;
-		free(*start);
-		*start = temp_free;
+		while(i <= lenth)
+		{
+			
+			elem = ft_strnnjoin(elem, (int)ft_strlen(elem), (*start)->tok, (*start)->len);
+			if((*start)->type == EXTENDED)
+				free((*start)->tok);
+			temp_free = *start;
+			if((*start)->next)
+				*start = (*start)->next;
+			if(temp_free)
+				free(temp_free);
+			i++;
+		}
+		ret = create_token(ft_strlen(elem), elem, EXTENDED);
+		if (temp)
+			temp->next = ret;
+		ret->prev = temp;
+		//because start is already start next
+		if ((*start)->next)
+		{
+			ret->next = (*start)->next;
+			ret->next->prev = ret;
+		}
 	}
-	ret = create_token(ft_strlen(elem), elem, TEXT);
-	temp->next = ret;
-	ret->prev = temp;
-	ret->next = (*start)->next;
-	ret->next->prev = ret;
+	// restore_tok_list(start);
+	fprintf(stderr, "poopoo\n");
 }

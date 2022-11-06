@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 17:36:08 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/18 16:44:33 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/10/19 16:20:02 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@ t_log_group *create_log_group(t_token_list **global)
 	int needs;
 	t_token_list *temp_tok;
 
+	if(!global)
+		return NULL;
 	ret = NULL;
-	
 	temp_tok = token_delim_logic(global, &len, &needs);
 	// add_log_link(&ret, create_log_link(temp_tok, len));
     while (temp_tok)

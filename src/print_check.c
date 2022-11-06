@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 15:53:45 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/17 14:37:57 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/06 13:01:57 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void print_logic_grp(t_log_group *log_grp)
 	{
 		i = 0;
 		printf("tokens in group %d\n", log_grp->tok_len);
-		// print_ntoken(log_grp->tok_list, log_grp->tok_len);
+		// print_ntoken(log_grp->tok_list, log_grp->tok_len, "");
 		printf("\n");
 		printf("group needs %d", log_grp->needs);
 		printf("\n");

@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 13:50:03 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/13 18:55:23 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/06 13:53:19 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int get_type(char input){
 	if (input == '>')
 		return SEPAR_MORE;
 	if (input == '<')
-		return SEPAR_MORE;
+		return SEPAR_LESS;
 	if(input == '&')
 		return LOGICAL_AND;
 	if (input == '(')
@@ -90,8 +90,10 @@ int add_quot_tok(t_token_list **token, char *input, char **start, int *type)
 		}
 		i++;
 	}
-	//printf("input is\t%s\nstart is\t%s\n", input, *start);
-	add_token(token, create_token((int)(&input[i] - *start - 1), *start + 1, *type));
+	if (i == 1)
+		add_token(token, create_token(0, *start, *type));
+	else//printf("input is\t%s\nstart is\t%s\n", input, *start);
+		add_token(token, create_token(i - 1, *start + 1, *type));
 	*start = &input[i] + 1;
 	*type = get_type(input[i + 1]);
 	//printf("it gets type from %c\nretturns %d\n", input[i + 1], i);
@@ -122,15 +124,7 @@ t_token_list *lexer(char *input)
 	start = input;
 	while(input[i])
 	{	
-		// printf("current is %c\n", input[i]);
-		if (get_type(input[i]) == DUP_QUOTES || get_type(input[i]) == SING_QUOTES){
-			add_common_tok(&tokens, &input[i], &start, &type);
-			ret = add_quot_tok(&tokens, &input[i], &start, &type);
-			if(ret == -1)
-				return NULL;
-			i += ret;
-		}
-		else if(type == SPACE && get_type(input[i]) != SPACE)
+		if(type == SPACE && get_type(input[i]) != SPACE)
 			add_common_tok(&tokens, &input[i], &start, &type);
 		else if(type == TEXT && get_type(input[i]) != TEXT)
 			add_common_tok(&tokens, &input[i], &start, &type);
@@ -146,8 +140,20 @@ t_token_list *lexer(char *input)
 			add_common_tok(&tokens, &input[i], &start, &type);
 		else if(type == LOGICAL_AND && get_type(input[i]) != LOGICAL_AND)
 			add_common_tok(&tokens, &input[i], &start, &type);
-		i++;
+		if (get_type(input[i]) == DUP_QUOTES || get_type(input[i]) == SING_QUOTES){
+			if(!tokens)
+				add_common_tok(&tokens, &input[i], &start, &type);
+			ret = add_quot_tok(&tokens, &input[i], &start, &type);
+			if(ret == -1)
+			{
+				free_tokens(tokens);
+				return (NULL);
+			}
+			i += ret;
+		}
+			i++;
 	}
+	
 	add_token(&tokens, create_token((int)(&input[i] - start), start, type));
 	extend_token_types(&tokens);
 	return tokens;

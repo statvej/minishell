@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:24:25 by gpinchuk          #+#    #+#             */
-/*   Updated: 2022/10/18 17:03:11 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/06 13:51:33 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@
 # define OUTPUT_APPEND 6
 # define DUP_QUOTES 7
 # define SING_QUOTES 8
+//# define EXTENDED_QOUES 9
 # define PRNTH_LEFT 10
 # define PRNTH_RIGHT 11
 # define LOGICAL_AND 12
@@ -118,7 +119,7 @@ t_data	*parse(t_token_list ** global, char **env);
 // t_data	*parse(char *input, char **envp);
 
 //Quotes
-void open_extantion_quotes(t_log_group *log_grp, t_data *data);
+void open_extention_quotes(t_log_group *log_grp, t_data *data);
 
 // //INitialization
 
@@ -145,6 +146,7 @@ void create_pipe_group(t_log_group *log_grp);
 //Destroy
 
 void    free_strarr(char **strarr);
+void free_tokens(t_token_list *tok);
 
 //Utils 
 
@@ -168,5 +170,7 @@ void print_ntoken(t_token_list *token, int n, char * depth);
 void			print_token(t_token_list *token);
 
 // void print_data(t_data *data);
+
+void restore_tok_list(t_token_list **global);
 
 #endif

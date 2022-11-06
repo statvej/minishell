@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:36:45 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/12 16:23:09 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/06 14:26:27 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,23 @@ void    free_strarr(char **strarr)
 		free(strarr[i]);
 	}
 	free(strarr);
+}
+
+void free_tokens(t_token_list *tok)
+{
+	t_token_list *temp;
+
+	if(!tok)
+		return;
+	temp = tok;
+	while (tok)
+	{
+		tok = tok->next;
+		free(temp);
+		if(temp->type == EXTENDED)
+			free(temp->tok);
+		temp = tok;
+	}
 }
 
 // void free_data(t_data *data)
