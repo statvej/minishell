@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 16:32:27 by statvej           #+#    #+#             */
-/*   Updated: 2022/05/01 18:32:58 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/07 17:54:08 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ size_t	ft_strlcat(char *dest, const char *src, size_t size)
 	len_dest = ft_strlen(dest);
 	len_src = ft_strlen(src);
 	i = 0;
+	//fprintf(stderr, "in strlcat statrt\n");				
 	if (size <= len_dest)
 		return (len_src + size);
 	while (src[i] && (len_dest + i) < (size - 1))

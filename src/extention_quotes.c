@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 14:18:13 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/06 18:32:46 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/07 18:02:40 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,25 @@ char	*extend(char *var, int len, char **env)
 	int i;
 	char *ret;
 	char *ext;
-
+	int var_len;
+	
 	i = 0;
+	var_len = 0;
 	ret = NULL;
+	while (var_len < len)
+	{
+		if(var[var_len] == '$')
+			break;
+		var_len++;
+	}
 	while (env[i])
 	{
-		if (ft_strncmp(var, env[i], len) == 0)
+		if (ft_strncmp(var, env[i], var_len) == 0)
 		{
-			ret = ft_strdup(&env[i][len + 1]);
+			ret = ft_strdup(&env[i][var_len + 1]);
 			break;
 		}
+		i++;
 	}
 	i = 0;
 	while (var[i])
@@ -54,24 +63,20 @@ void open_extentions(t_token_list **tok_list, int tok_len, char **env)
 	count = 0;
 	while (temp && count < tok_len)
 	{
-		if(temp->type == TEXT ||  temp->type == DUP_QUOTES)
+		i = 0;
+		while (i < temp->len && (temp->type == TEXT ||  temp->type == DUP_QUOTES))
 		{
-			i = 0;
-			while (i < temp->len)
+			if (temp->tok[i] == '$')
 			{
-				if (temp->tok[i] == '$')
-				{
-					ext = extend(&temp->tok[i + 1], temp->len - i - 1, env);					
-					temp->tok = ft_strnnjoin(temp->tok, i, ext, ft_strlen(ext));
-					temp->len = ft_strlen(temp->tok);
-					if (temp->type == TEXT)
-						temp->type = EXTENDED;
-					if(ext)
-						free(ext);
-				}
-				i++;	
+				ext = extend(&temp->tok[i + 1], temp->len - i - 1, env);			
+				temp->tok = ft_strnnjoin(temp->tok, i, ext, ft_strlen(ext));
+				temp->len = ft_strlen(temp->tok);
+				if (temp->type == TEXT)
+					temp->type = EXTENDED;
+				if(ext)
+					free(ext);
 			}
-					
+			i++;
 		}
 		count++;
 		temp = temp->next;
@@ -85,7 +90,7 @@ void open_quotes(t_token_list **tok_list, int *tok_lenth)
 	int i;
 	int j[2]= {0, 0};
 
-	
+	//error when "1""2"
 	i = 0;
 	temp = *tok_list;
 	while (i < *tok_lenth && temp)
@@ -131,7 +136,7 @@ void open_extention_quotes(t_log_group *log_grp, t_data *data)
 		temp_pipe = temp->pipe_group;
 		while(temp_pipe)
 		{
-			//open_extentions(&temp_pipe->tok_list, temp_pipe->tok_len, data->envp);
+			open_extentions(&temp_pipe->tok_list, temp_pipe->tok_len, data->envp);
 			open_quotes(&temp_pipe->tok_list, &temp_pipe->tok_len);
 			if(temp_pipe)
 				temp_pipe = temp_pipe->next;	

@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 14:45:04 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/04/27 14:45:19 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/07 18:01:25 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*tmp;
+	char 	*test;
 
 	if (s1 && s2)
 	{
@@ -22,7 +23,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		if (!tmp)
 			return (NULL);
 		tmp = ft_strcpy(tmp, (char *)s1);
-		return (ft_strcat(tmp, (char *)s2));
+		test = ft_strcat(tmp, (char *)s2);
+		return (test);
 	}
 	else if (s1 == NULL && s2 != NULL)
 		return (ft_strdup((char *)s2));
