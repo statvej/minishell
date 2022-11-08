@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 14:18:13 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/08 13:23:58 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/08 14:00:51 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ void open_quotes(t_token_list **tok_list, int *tok_lenth)
 	//error when "1""2"
 	i = 0;
 	temp = *tok_list;
-	while (i < *tok_lenth && temp)
+	while (temp)
 	{
 		if(temp->type == DUP_QUOTES || temp->type == SING_QUOTES)
 			{
@@ -152,7 +152,7 @@ void open_quotes(t_token_list **tok_list, int *tok_lenth)
  					j[0] = i;
 					start = temp;
 				}
-				if(temp->next && temp->next->len && (temp->prev->type == TEXT || temp->prev->type == EXTENDED))
+				if(temp->next && temp->next->len && (temp->next->type == TEXT || temp->next->type == EXTENDED))
 				{
 					fprintf(stderr, "%s\n", temp->next->tok);
 					j[1] = i + 1;

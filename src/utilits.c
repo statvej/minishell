@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:36:32 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/06 18:23:28 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/08 14:05:06 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,7 @@ void strtoknjoin(t_token_list **start, int lenth)
 			if((*start)->type == EXTENDED)
 				free((*start)->tok);
 			temp_free = *start;
-			if((*start)->next)
-				*start = (*start)->next;
+			*start = (*start)->next;
 			if(temp_free)
 				free(temp_free);
 			i++;
@@ -108,9 +107,9 @@ void strtoknjoin(t_token_list **start, int lenth)
 			temp->next = ret;
 		ret->prev = temp;
 		//because start is already start next
-		if ((*start)->next)
+		if ((*start))
 		{
-			ret->next = (*start)->next;
+			ret->next = (*start);
 			ret->next->prev = ret;
 		}
 	}
