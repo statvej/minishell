@@ -1,7 +1,7 @@
 NAME = libft.a
 AR = ar rcs
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 SRC_F = $(wildcard *.c)
 INC_F = $(wildcard *.h)
 OBJ_F = $(SRC_F:.c=.o)
@@ -16,7 +16,7 @@ $(NAME): $(OBJS)
 	@$(AR) $(NAME) $(OBJS) 
 
 $(OBJ)/%.o:    $(SRC)/%.c $(OBJ)
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS)  -c $< -o $@
 
 bonus: all
 

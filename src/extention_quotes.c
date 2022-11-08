@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 14:18:13 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/07 18:02:40 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/08 13:23:58 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,48 @@
 #include "minishell.h"
 
 //need to add option for $?
-char	*extend(char *var, int len, char **env)
+// char	*extend(char *var, int len, char **env)
+// {
+// 	int i;
+// 	char *ret;
+// 	char *ext;
+// 	int var_len;
+	
+// 	i = 0;
+// 	var_len = 0;
+// 	ret = NULL;
+// 	while (var_len < len)
+// 	{
+// 		if(var[var_len] == '$')
+// 			break;
+// 		var_len++;
+// 	}
+// 	while (env[i])
+// 	{
+// 		if (ft_strncmp(var, env[i], var_len) == 0)
+// 		{
+// 			ret = ft_strdup(&env[i][var_len + 1]);
+// 			break;
+// 		}
+// 		i++;
+// 	}
+// 	i = 0;
+// 	while (var[i])
+// 	{
+// 		if (var[i] == '$' && var[i + 1])
+// 		{
+// 			ext = extend(&var[i + 1], len - i - 1, env);
+// 			ret = ft_strjoin(ret, ext);
+// 		}
+// 		i++;
+// 	}
+// 	return ret;
+// }
+
+char *sub_extend(char *var, int len, char **env)
 {
 	int i;
 	char *ret;
-	char *ext;
 	int var_len;
 	
 	i = 0;
@@ -35,24 +72,32 @@ char	*extend(char *var, int len, char **env)
 	{
 		if (ft_strncmp(var, env[i], var_len) == 0)
 		{
-			ret = ft_strdup(&env[i][var_len + 1]);
-			break;
+			return ft_strdup(&env[i][var_len + 1]);
 		}
 		i++;
 	}
+	return NULL;
+}
+
+char	*extend(char *var, int len, char **env)
+{
+	char *ext;
+	char *ret;
+	int i;
+
 	i = 0;
-	while (var[i])
+	while (i < len)
 	{
-		if (var[i] == '$' && var[i + 1])
+		if(var[i] == '$')
 		{
-			ext = extend(&var[i + 1], len - i - 1, env);
-			ret = ft_strjoin(ret, ext);
+			ext = sub_extend(&var[i + 1], len - i - 1, env);
+			ret = ft_strnnjoin(ret, ft_strlen(ret), ext, ft_strlen(ext));
 		}
 		i++;
 	}
 	return ret;
+	
 }
-
 void open_extentions(t_token_list **tok_list, int tok_len, char **env)
 {
 	t_token_list *temp = *tok_list;
@@ -68,7 +113,7 @@ void open_extentions(t_token_list **tok_list, int tok_len, char **env)
 		{
 			if (temp->tok[i] == '$')
 			{
-				ext = extend(&temp->tok[i + 1], temp->len - i - 1, env);			
+				ext = extend(&temp->tok[i], temp->len - i, env);			
 				temp->tok = ft_strnnjoin(temp->tok, i, ext, ft_strlen(ext));
 				temp->len = ft_strlen(temp->tok);
 				if (temp->type == TEXT)

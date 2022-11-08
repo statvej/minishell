@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 14:45:04 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/07 18:01:25 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/08 13:01:34 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (test);
 	}
 	else if (s1 == NULL && s2 != NULL)
-		return (ft_strdup((char *)s2));
+		return (ft_strndup((char *)s2, ft_strlen(s2)));
 	else if (s2 == NULL && s1 != NULL)
-		return (ft_strdup((char *)s1));
+		return (ft_strndup((char *)s1, ft_strlen(s1)));
 	else
 		return (NULL);
 }
