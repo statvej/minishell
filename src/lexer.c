@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 13:50:03 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/06 13:53:19 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/09 18:49:29 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int extend_token_types(t_token_list **token)
 	{
 		if(temp->type == PRNTH_RIGHT || temp->type == SEPAR_MORE ||\
 				temp->type == SEPAR_PIPE || temp->type == LOGICAL_AND ||\
-					 temp->type == PRNTH_LEFT)
+					 temp->type == PRNTH_LEFT || temp->type == SEPAR_LESS)
 		{
 			i = 0;
 	

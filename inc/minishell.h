@@ -6,13 +6,14 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:24:25 by gpinchuk          #+#    #+#             */
-/*   Updated: 2022/11/06 13:51:33 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/09 18:57:12 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <fcntl.h>
 # include <stdio.h>
 # include <stdbool.h>
 # include <unistd.h>
@@ -28,9 +29,9 @@
 
 //DEFINITION OF STANDART FDs
 
-# define STR_IN 0
-# define STR_OUT 1
-# define STR_ERR 2
+# define STD_IN 0
+# define STD_OUT 1
+# define STD_ERR 2
 
 
 # define OPENED 0
@@ -56,6 +57,14 @@
 # define SEPAR_LESS 15
 # define SEPAR_PIPE 16
 # define EXTENDED 17
+# define REDIRECTIONS 18
+
+typedef struct s_int_list
+{
+	int val;
+	struct s_int_list *next; 
+}t_int_list;
+
 
 typedef struct s_token_list
 {
@@ -70,10 +79,9 @@ typedef struct s_cmd_group
 {
 	char **pos_paths;
 	char **args;
-	int* in;
-	int in_size;
-	int* out;
-	int out_size;
+	int here_doc;
+	struct s_int_list *in;
+	struct s_int_list *out;
 }t_cmd_group;
 
 typedef struct s_pipe_group
@@ -168,9 +176,21 @@ void mx_print_strarr(char **arr, const char *delim);
 void print_logic_grp(t_log_group *log_grp);
 void print_ntoken(t_token_list *token, int n, char * depth);
 void			print_token(t_token_list *token);
+void print_cmd(t_cmd_group *cmd_grp);
 
 // void print_data(t_data *data);
 
 void restore_tok_list(t_token_list **global);
+
+//INT LISTS
+
+t_int_list *create_int_link(int val);
+void add_to_int_list(t_int_list **list, t_int_list *to_add);
+
+//CMD
+int open_redir(t_pipe_group *pipe);
+t_cmd_group *create_cmdgrp(void);
+void create_args(t_pipe_group *pipe);
+int redirect(int type, char *file, t_cmd_group **cmds);
 
 #endif

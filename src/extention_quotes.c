@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 14:18:13 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/08 14:00:51 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/09 18:52:40 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ char	*extend(char *var, int len, char **env)
 	return ret;
 	
 }
+
+//need to add option for $?
 void open_extentions(t_token_list **tok_list, int tok_len, char **env)
 {
 	t_token_list *temp = *tok_list;
@@ -135,7 +137,6 @@ void open_quotes(t_token_list **tok_list, int *tok_lenth)
 	int i;
 	int j[2]= {0, 0};
 
-	//error when "1""2"
 	i = 0;
 	temp = *tok_list;
 	while (temp)
@@ -154,19 +155,16 @@ void open_quotes(t_token_list **tok_list, int *tok_lenth)
 				}
 				if(temp->next && temp->next->len && (temp->next->type == TEXT || temp->next->type == EXTENDED))
 				{
-					fprintf(stderr, "%s\n", temp->next->tok);
 					j[1] = i + 1;
 				}
 				else 
 					j[1] = i;
-				fprintf(stderr, "%d,%d\n", j[0],j[1]);
 				strtoknjoin(&start, (j[1] - j[0]));
 			}
 		i++;
 		temp = temp->next;
 	}
 	*tok_lenth -= (j[1] - j[0]);
-	fprintf(stderr, "pp\n");
 }
 
 void open_extention_quotes(t_log_group *log_grp, t_data *data)
@@ -183,6 +181,9 @@ void open_extention_quotes(t_log_group *log_grp, t_data *data)
 		{
 			open_extentions(&temp_pipe->tok_list, temp_pipe->tok_len, data->envp);
 			open_quotes(&temp_pipe->tok_list, &temp_pipe->tok_len);
+			open_redir(temp_pipe);
+			create_args(temp_pipe);
+			print_cmd(temp_pipe->cmd_group);
 			if(temp_pipe)
 				temp_pipe = temp_pipe->next;	
 		}

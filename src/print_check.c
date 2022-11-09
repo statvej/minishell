@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 15:53:45 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/06 13:01:57 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/09 18:57:48 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,4 +108,23 @@ void print_logic_grp(t_log_group *log_grp)
 		printf("\n");
 		log_grp = log_grp->next;
 	}
+}
+
+void print_check_int_list(t_int_list *list)
+{
+	printf("fd's are : ");
+	while (list)
+	{
+		printf("%d, ", list->val);		
+		list = list->next;
+	}
+	printf("\n");
+}
+
+void print_cmd(t_cmd_group *cmd_grp)
+{
+	print_check_int_list(cmd_grp->in);
+	print_check_int_list(cmd_grp->out);
+	mx_print_strarr(cmd_grp->args, " ");
+	fprintf(stderr, "\n\n");
 }

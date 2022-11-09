@@ -1,0 +1,5 @@
+1 make function that checks lexical errors
+2 debug cmd.c file
+    3 debug redirection ls < Makefile works, but < Makefile ls doesnt
+    4 double redirect doesnt work
+    5 args kinda dont exist
