@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 15:53:45 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/09 18:57:48 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/10 13:01:38 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ void mx_print_strarr(char **arr, const char *delim){
 	int i = 0;
 
 	for(; arr[i]; i++){
-		ft_putstr_fd(arr[i], 1);
-		ft_putstr_fd((char *)delim, 1);
+		printf("%s%s", arr[i], delim);
 		exist = 1;
 	}
 }
@@ -83,7 +82,8 @@ void print_pipe_group(t_pipe_group *pipe_grp)
 	while (pipe_grp)
 	{
 		printf("pipe link #%d\n", i);
-		print_ntoken(pipe_grp->tok_list, pipe_grp->tok_len, "\t");
+		// print_ntoken(pipe_grp->tok_list, pipe_grp->tok_len, "\t");
+		print_cmd(pipe_grp->cmd_group);
 		pipe_grp = pipe_grp->next;
 		i++;
 	}	
@@ -123,8 +123,10 @@ void print_check_int_list(t_int_list *list)
 
 void print_cmd(t_cmd_group *cmd_grp)
 {
+	printf("\n\t*command groups incoming*\n\n");
 	print_check_int_list(cmd_grp->in);
 	print_check_int_list(cmd_grp->out);
+	printf("\nlimit is : %s\nargs are : ", cmd_grp->limit);
 	mx_print_strarr(cmd_grp->args, " ");
-	fprintf(stderr, "\n\n");
+	fprintf(stderr, "\n");
 }

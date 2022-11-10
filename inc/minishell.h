@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:24:25 by gpinchuk          #+#    #+#             */
-/*   Updated: 2022/11/09 18:57:12 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/10 12:40:52 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ typedef struct s_cmd_group
 {
 	char **pos_paths;
 	char **args;
-	int here_doc;
+	char *limit;
 	struct s_int_list *in;
 	struct s_int_list *out;
 }t_cmd_group;
@@ -127,7 +127,7 @@ t_data	*parse(t_token_list ** global, char **env);
 // t_data	*parse(char *input, char **envp);
 
 //Quotes
-void open_extention_quotes(t_log_group *log_grp, t_data *data);
+int open_extention_quotes(t_log_group *log_grp, t_data *data);
 
 // //INitialization
 
@@ -191,6 +191,6 @@ void add_to_int_list(t_int_list **list, t_int_list *to_add);
 int open_redir(t_pipe_group *pipe);
 t_cmd_group *create_cmdgrp(void);
 void create_args(t_pipe_group *pipe);
-int redirect(int type, char *file, t_cmd_group **cmds);
+int redirect(int type, char *file, int len, t_cmd_group **cmds);
 
 #endif
