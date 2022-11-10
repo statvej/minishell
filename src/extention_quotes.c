@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 14:18:13 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/10 13:10:15 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/10 13:44:17 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,30 +168,4 @@ void open_quotes(t_token_list **tok_list, int *tok_lenth)
 	*tok_lenth -= (j[1] - j[0]);
 }
 
-int open_extention_quotes(t_log_group *log_grp, t_data *data)
-{
-	t_log_group *temp;
-	t_pipe_group *temp_pipe;
-	(void)data;
-
-	temp = log_grp;
-	while(temp)
-	{
-		temp_pipe = temp->pipe_group;
-		while(temp_pipe)
-		{
-			// mx_print_strarr(data->envp, "\n");
-			open_extentions(&temp_pipe->tok_list, temp_pipe->tok_len, data->envp);
-			open_quotes(&temp_pipe->tok_list, &temp_pipe->tok_len);
-			if(!open_redir(temp_pipe))
-				return (-1);
-			create_args(temp_pipe);
-			// print_cmd(temp_pipe->cmd_group);
-			if(temp_pipe)
-				temp_pipe = temp_pipe->next;	
-		}
-		temp = temp->next;
-	}
-	return (1);
-}
 

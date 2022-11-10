@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 17:33:45 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/10 13:10:29 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/10 16:31:43 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ int redirect(int type, char *file, int len, t_cmd_group **cmds)
 	
 	fd = -1;
 	str = ft_strndup(file, len);
+	printf("%s\n", str);
 	if (type == INPUT)
 	{
-		// printf("%s\n", str);
 		fd = open(str, O_RDONLY);
 		add_to_int_list(&(*cmds)->in, create_int_link(fd));
 	}
@@ -107,7 +107,7 @@ int count_args(t_token_list *list, int list_len){
     return ac;
 }
 
-void create_args(t_pipe_group *pipe)
+int create_args(t_pipe_group *pipe)
 {
     int ac;
     int i;
@@ -118,6 +118,8 @@ void create_args(t_pipe_group *pipe)
     count = 0;
     list_temp = pipe->tok_list;
     ac = count_args(list_temp, pipe->tok_len);
+	if(ac == 0)
+		return -1;
 	// printf("arg count is %d\n", ac);
     pipe->cmd_group->args = (char **)malloc(sizeof(char *) * (ac + 1));
     while (i < pipe->tok_len)
@@ -131,6 +133,7 @@ void create_args(t_pipe_group *pipe)
         i++;
     }
     pipe->cmd_group->args[ac] = NULL;
+	return 1;
 }
 
 t_cmd_group *create_cmdgrp(void)
@@ -141,6 +144,10 @@ t_cmd_group *create_cmdgrp(void)
     ret->args = NULL;
     ret->in = NULL;
     ret->out = NULL;
+	ret->pipes[0] = -1;
+	ret->pipes[1] = -1;
+	ret->child = -1;
+	ret->command = NULL;
     ret->pos_paths = NULL; 
     ret->limit = NULL;
     return ret;

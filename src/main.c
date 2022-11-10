@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 14:53:37 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/08 13:03:13 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/10 16:02:38 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,18 @@ int main(int argc, char **argv, char **envp)
 	while (true)
 	{
 		comnd_table = read_input();
+		fprintf(stderr, "before lexer");
         tokens = lexer(comnd_table);
 		if(!tokens)
 			continue;
 		// print_token(tokens);
+		fprintf(stderr, "before parse\n");
 		data = parse(&tokens, envp);
-		//theExecutor();
+		fprintf(stderr, "before exec\n");
+	
+		execution(data->log_grp->pipe_group, envp);
 
 		// free_data(data);
-		// free();
-		// free(data);
 	}
 	exit(1);
 }

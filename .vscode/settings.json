@@ -18,7 +18,9 @@
         "utility": "c",
         "string": "c",
         "string_view": "c",
-        "vector": "c"
+        "vector": "c",
+        "__locale": "c",
+        "ios": "c"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }
