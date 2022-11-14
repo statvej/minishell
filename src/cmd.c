@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 17:33:45 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/10 16:31:43 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/14 14:59:07 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,11 +144,7 @@ t_cmd_group *create_cmdgrp(void)
     ret->args = NULL;
     ret->in = NULL;
     ret->out = NULL;
-	ret->pipes[0] = -1;
-	ret->pipes[1] = -1;
-	ret->child = -1;
 	ret->command = NULL;
-    ret->pos_paths = NULL; 
     ret->limit = NULL;
     return ret;
 }

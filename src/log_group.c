@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 17:36:08 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/10/19 16:20:02 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/14 17:56:04 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ t_log_group *create_log_link(t_token_list *tok_list, int tok_len, int needs)
 	log_link->next = NULL;
 	log_link->prev = NULL;
     log_link->pipe_group = NULL;
+	log_link->rec_depth = 0;
 	log_link->needs = needs;
 	return (log_link);
 }

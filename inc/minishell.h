@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:24:25 by gpinchuk          #+#    #+#             */
-/*   Updated: 2022/11/10 16:23:21 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/14 18:37:34 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,10 @@ typedef struct s_token_list
 
 typedef struct s_cmd_group
 {
-	char **pos_paths;
 	char **args;
 	char *limit;
 	int	 pipes[2];
-	int  child;
+	pid_t  child;
 	char *command;
 	struct s_int_list *in;
 	struct s_int_list *out;
@@ -95,6 +94,7 @@ typedef struct s_pipe_group
 	t_token_list *tok_list;
 	int tok_len;
 	struct s_pipe_group *next;
+	struct s_pipe_group *prev;
 }t_pipe_group;
 
 typedef struct s_log_group
@@ -102,6 +102,7 @@ typedef struct s_log_group
 	t_pipe_group *pipe_group;
 	t_token_list *tok_list;
 	int tok_len;
+	int rec_depth;
 	int needs;
 	int ret;
 	struct s_log_group *prev;
@@ -111,6 +112,8 @@ typedef struct s_log_group
 typedef struct s_data	
 {
 	t_log_group *log_grp;
+	int last_log_ret;
+	char **pos_paths;
 	char **envp;
 }t_data;
 
@@ -209,6 +212,14 @@ int	check_lexical_errors(t_token_list *list);
 
 //execution
 
-int execution(t_pipe_group *pipe_grp, char **envp);
+int execution(t_data *data, char **envp);
+
+//Signals
+
+void	sig_handle(int sig);
+
+//RECURSION DEPTH
+
+int set_recursion_depth(t_log_group *log_grp);
 
 #endif

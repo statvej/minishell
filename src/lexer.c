@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 13:50:03 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/09 18:49:29 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/14 14:59:55 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int extend_token_types(t_token_list **token)
 				}
 				if(ft_strncmp(separs[i], temp->tok, temp->len) == 0)
 				{
-					// printf("temptok %.2s and index is %d\n", temp->tok, index[i]);
 					temp->type = index[i];		
 					break;;
 				}
@@ -134,9 +133,9 @@ t_token_list *lexer(char *input)
 			add_common_tok(&tokens, &input[i], &start, &type);
 		else if(type == SEPAR_PIPE && get_type(input[i]) != SEPAR_PIPE)
 			add_common_tok(&tokens, &input[i], &start, &type);
-		else if(type == PRNTH_LEFT && get_type(input[i]) != PRNTH_LEFT)
+		else if(type == PRNTH_LEFT)
 			add_common_tok(&tokens, &input[i], &start, &type);
-		else if(type == PRNTH_RIGHT && get_type(input[i]) != PRNTH_RIGHT)
+		else if(type == PRNTH_RIGHT)
 			add_common_tok(&tokens, &input[i], &start, &type);
 		else if(type == LOGICAL_AND && get_type(input[i]) != LOGICAL_AND)
 			add_common_tok(&tokens, &input[i], &start, &type);
@@ -155,7 +154,11 @@ t_token_list *lexer(char *input)
 	}
 	
 	add_token(&tokens, create_token((int)(&input[i] - start), start, type));
-	extend_token_types(&tokens);
+	if(!extend_token_types(&tokens))
+	{
+		free_tokens(tokens);
+		return NULL;	
+	}
 	return tokens;
 }
 

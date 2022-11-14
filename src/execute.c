@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:38:44 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/10 17:02:12 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/14 20:03:33 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char **find_path(char **envp)
 char	*find_command(char **path, char *command)
 {
 	int		i;
-	char	*result;
+	char	*result;	
 	char	*temp;
 	i = 0;
 	while (path[i])
@@ -45,104 +45,112 @@ char	*find_command(char **path, char *command)
 	return (0);
 }
 
-void process(t_cmd_group *cmd_grp, char **envp)
+void process(t_cmd_group *cmd_grp, char **envp, char **pp)
 {
-	fprintf(stderr, "%s\n %s", );
-	cmd_grp->command = find_command(cmd_grp->pos_paths, cmd_grp->args[0]);
+	cmd_grp->command = find_command(pp, cmd_grp->args[0]);
+	
 	if (!cmd_grp->command)
 	{
 		perror("command doesn't exist");
 	}
 	else
+	{
+		fprintf(stderr, "before execve of cmd %s\n", cmd_grp->command);
 		execve(cmd_grp->command, cmd_grp->args, envp);
+		fprintf(stderr, "after execve\n");
+	}
 }
 
-void arr_execute(t_cmd_group *cmd_grp, char **envp)
+void create_pipes(t_log_group *log_grp)
 {
-	if (pipe(cmd_grp->pipes) < 0)
-		perror("ERROR with pipes");
-	cmd_grp->child = fork();
-	if (cmd_grp->child == -1)
-		perror("ERROR with forks");
-	if (cmd_grp->child == 0)
+	if (log_grp->pipe_group->next)
 	{
-		close(cmd_grp->pipes[0]);
-		while(cmd_grp->out)
+		while(log_grp->pipe_group)
 		{
-			dup2(cmd_grp->out->val, STDOUT_FILENO);
-			cmd_grp->out = cmd_grp->out->next;
-		}
-		dup2(cmd_grp->pipes[1], STDOUT_FILENO);
-		close(cmd_grp->pipes[1]);
-		process(cmd_grp, envp);
+			pipe(log_grp->pipe_group->cmd_group->pipes);
+			log_grp->pipe_group = log_grp->pipe_group->next;
+		}		
 	}
-	else
-	{
-		close(cmd_grp->pipes[1]);
-		while(cmd_grp->in)
-		{
-			dup2(cmd_grp->in->val, STDIN_FILENO);
-			cmd_grp->in = cmd_grp->in->next;
-		}
-		dup2(cmd_grp->pipes[0], STDIN_FILENO);
-		close(cmd_grp->pipes[0]);
-		waitpid(cmd_grp->child, NULL, 0);
-	}
+}
+
+void execute(t_pipe_group *pipe_grp, char **envp, char **pp)
+{
+	t_cmd_group *temp_cmd;
 	
-}
-
-int post_pipe_exec(t_cmd_group *cmd_group, char **envp)
-{
-	cmd_group->child = fork();
-	if (cmd_group->child == -1)
+	temp_cmd = pipe_grp->cmd_group;
+	temp_cmd->child = fork();
+	if(temp_cmd->child == 0)
 	{
-		perror("ERROR wit forks");
-		return -1;
-	}
-	if (cmd_group->child == 0)
-	{
-		while(cmd_group->out)
+		if(pipe_grp->next)
 		{
-			if (dup2(cmd_group->out->val, STDOUT_FILENO) == -1)
-				perror("ERROR wit pipes");
-			cmd_group->out = cmd_group->out->next;
+			dup2(temp_cmd->pipes[0], pipe_grp->prev->cmd_group->pipes[1]);
+			dup2(temp_cmd->pipes[1], STDOUT_FILENO);
 		}
-		process(cmd_group, envp);
+		while(temp_cmd->in)
+		{
+			dup2(temp_cmd->in->val, STDIN_FILENO);
+			temp_cmd->in = temp_cmd->in->next;
+		}
+		while(temp_cmd->out)
+		{
+			dup2(temp_cmd->out->val, STD_OUT);
+			temp_cmd->out = temp_cmd->out->next;
+		}
+		process(temp_cmd, envp, pp);
 	}
 	else
-	{
-		while(cmd_group->in)
-		{
-			dup2(cmd_group->in->val, STDIN_FILENO);
-			cmd_group->in = cmd_group->in->next;
-		}
-		waitpid(cmd_group->child, NULL, 0);
-	}
-	return SUCCESS;
+		waitpid(temp_cmd->child, NULL, 0);
 }
 
-int execution(t_pipe_group *pipe_grp, char **envp)
+void close_pipes(t_log_group *log_grp)
 {
-	t_pipe_group *temp;
-	char **path;
-
-	temp = pipe_grp;
-	path = find_path(envp);
-	// mx_print_strarr();
-	if (temp->next)
-	{	
-		// fprintf(stderr, "III");
-		while(temp->next)
+	if (log_grp->pipe_group->next)
+	{
+		while(log_grp->pipe_group)
 		{
-			temp->cmd_group->pos_paths = path;
-			arr_execute(temp->cmd_group, envp);
-			temp = temp->next;
+			close(log_grp->pipe_group->cmd_group->pipes[0]);
+			close(log_grp->pipe_group->cmd_group->pipes[1]);
+			log_grp->pipe_group = log_grp->pipe_group->next;
 		}
-		temp = temp->next;
-		fprintf(stderr, "\nIII\n");
 	}
-	temp->cmd_group->pos_paths = path;
-	if(post_pipe_exec(temp->cmd_group, envp) == ERROR)
-		return ERROR;
-	return SUCCESS;
+}
+
+t_log_group *execute_log(t_data *data, t_log_group *log_grp, int cur_level)
+{
+	t_log_group *log_temp;
+	t_pipe_group *pipe_temp;
+
+	log_temp = log_grp;
+	while(log_temp)
+	{
+		if(log_temp->rec_depth > cur_level)
+		{
+			log_temp = execute_log(data, log_temp, cur_level + 1);
+		}
+		pipe_temp = log_temp->pipe_group;
+		create_pipes(log_temp);
+		while(pipe_temp)
+		{
+			execute(pipe_temp, data->envp, data->pos_paths);
+
+			pipe_temp = pipe_temp->next;
+		}
+		close_pipes(log_temp);
+		if(log_temp->next && log_temp->next->rec_depth < cur_level)
+		{
+			return log_temp;
+		}
+		log_temp = log_temp->next;
+	}
+	return NULL;
+}
+
+int execution(t_data *data, char **envp)
+{
+	int prev_depth;
+	
+	prev_depth = 0;
+	data->pos_paths = find_path(envp);
+	execute_log(data, data->log_grp, 0);
+	return 1;
 }

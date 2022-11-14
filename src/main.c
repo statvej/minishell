@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 14:53:37 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/10 16:02:38 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/14 19:48:10 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,26 @@ int main(int argc, char **argv, char **envp)
     //         "HOME=ia doma",
     //         "PWD=/Users/fstaryk/Desktop/minishell",
     //         "SHELL=minishell"};
+
+	// signal(SIGQUIT, sig_handle);
+	// signal(SIGINT, sig_handle);
+	
 	while (true)
 	{
 		comnd_table = read_input();
-		fprintf(stderr, "before lexer");
+		fprintf(stderr, "\n%s\n", comnd_table);
+		// fprintf(stderr, "before lexer");
         tokens = lexer(comnd_table);
 		if(!tokens)
 			continue;
 		// print_token(tokens);
-		fprintf(stderr, "before parse\n");
+		// fprintf(stderr, "before parse\n");
 		data = parse(&tokens, envp);
-		fprintf(stderr, "before exec\n");
+		// fprintf(stderr, "before exec\n");
 	
-		execution(data->log_grp->pipe_group, envp);
-
+		execution(data, data->envp);
+		free(comnd_table);
+		
 		// free_data(data);
 	}
 	exit(1);

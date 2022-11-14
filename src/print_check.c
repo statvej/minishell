@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 15:53:45 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/10 13:01:38 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/14 18:32:42 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ void print_pipe_group(t_pipe_group *pipe_grp)
 	while (pipe_grp)
 	{
 		printf("pipe link #%d\n", i);
-		// print_ntoken(pipe_grp->tok_list, pipe_grp->tok_len, "\t");
-		print_cmd(pipe_grp->cmd_group);
+		print_ntoken(pipe_grp->tok_list, pipe_grp->tok_len, "\t");
+		// print_cmd(pipe_grp->cmd_group);
 		pipe_grp = pipe_grp->next;
 		i++;
 	}	
@@ -104,6 +104,7 @@ void print_logic_grp(t_log_group *log_grp)
 		printf("\n");
 		printf("group needs %d", log_grp->needs);
 		printf("\n");
+		printf("recursion depth is %d\n", log_grp->rec_depth);
 		print_pipe_group(log_grp->pipe_group);
 		printf("\n");
 		log_grp = log_grp->next;

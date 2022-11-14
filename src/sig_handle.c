@@ -1,24 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_input.c                                       :+:      :+:    :+:   */
+/*   sig_handle.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/04 15:01:13 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/11 19:16:49 by fstaryk          ###   ########.fr       */
+/*   Created: 2022/11/10 17:56:35 by fstaryk           #+#    #+#             */
+/*   Updated: 2022/11/10 18:02:37 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-char	*read_input(void)
+void	sig_handle(int sig)
 {
-	char cwd[256];
-	getcwd(cwd, sizeof(cwd));
-	ft_strcat(cwd, "  ");
-	// if (cwd != "\0" || cwd != NULL)
-	// 	add_history(cwd);
-
-    return readline(cwd);
+    fprintf(stderr, "%d", sig);
 }

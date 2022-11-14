@@ -10,6 +10,7 @@ t_pipe_group *create_pipe_link(t_token_list *tok_list, int tok_len)
 	pipe_grp->tok_list = tok_list;
 	pipe_grp->tok_len = tok_len;
 	pipe_grp->next = NULL;
+	pipe_grp->prev = NULL;
     pipe_grp->cmd_group = NULL;
 
 	return (pipe_grp);
@@ -30,6 +31,7 @@ void add_pipe_link(t_pipe_group **first, t_pipe_group *to_add)
 	while (temp->next)
 		temp = temp->next;
 	temp->next = to_add;
+	to_add->prev = temp;
 }
 
 void create_pipe_group(t_log_group *log_grp)
