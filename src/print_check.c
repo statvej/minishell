@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 15:53:45 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/14 18:32:42 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/15 14:47:26 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void mx_print_strarr(char **arr, const char *delim){
 	int i = 0;
 
 	for(; arr[i]; i++){
-		printf("%s%s", arr[i], delim);
+		fprintf(stderr, "%s%s", arr[i], delim);
 		exist = 1;
 	}
 }

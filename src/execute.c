@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:38:44 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/14 20:03:33 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/15 15:09:40 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,15 @@ void process(t_cmd_group *cmd_grp, char **envp, char **pp)
 
 void create_pipes(t_log_group *log_grp)
 {
-	if (log_grp->pipe_group->next)
+	t_pipe_group *temp;
+
+	temp = log_grp->pipe_group;
+	if (temp->next)
 	{
-		while(log_grp->pipe_group)
+		while(temp->next)
 		{
-			pipe(log_grp->pipe_group->cmd_group->pipes);
-			log_grp->pipe_group = log_grp->pipe_group->next;
+			pipe(temp->cmd_group->pipes);
+			temp = temp->next;
 		}		
 	}
 }
@@ -83,8 +86,15 @@ void execute(t_pipe_group *pipe_grp, char **envp, char **pp)
 	{
 		if(pipe_grp->next)
 		{
-			dup2(temp_cmd->pipes[0], pipe_grp->prev->cmd_group->pipes[1]);
-			dup2(temp_cmd->pipes[1], STDOUT_FILENO);
+			// fprintf("");
+			if ((dup2(temp_cmd->pipes[1], STDOUT_FILENO)) == -1)
+				perror("ERR_OUTFILE");
+		}
+		if(pipe_grp->prev)
+		{
+			if ((dup2(pipe_grp->prev->cmd_group->pipes[0], STDIN_FILENO)) == -1)
+				perror("ERR_OUTFILE");
+			
 		}
 		while(temp_cmd->in)
 		{
@@ -93,24 +103,33 @@ void execute(t_pipe_group *pipe_grp, char **envp, char **pp)
 		}
 		while(temp_cmd->out)
 		{
-			dup2(temp_cmd->out->val, STD_OUT);
+			dup2(temp_cmd->out->val, STDOUT_FILENO);
 			temp_cmd->out = temp_cmd->out->next;
 		}
 		process(temp_cmd, envp, pp);
 	}
 	else
+	{
+		if(pipe_grp->prev && pipe_grp->prev->cmd_group->pipes[0] > 1)
+			close(pipe_grp->prev->cmd_group->pipes[0]);
+		if(temp_cmd->pipes[1] > 1)
+			close(temp_cmd->pipes[1]);
 		waitpid(temp_cmd->child, NULL, 0);
+	}
 }
 
 void close_pipes(t_log_group *log_grp)
 {
-	if (log_grp->pipe_group->next)
+	t_pipe_group *temp;
+
+	temp = log_grp->pipe_group;
+	if (temp->next)
 	{
-		while(log_grp->pipe_group)
+		while(temp->next)
 		{
-			close(log_grp->pipe_group->cmd_group->pipes[0]);
-			close(log_grp->pipe_group->cmd_group->pipes[1]);
-			log_grp->pipe_group = log_grp->pipe_group->next;
+			close(temp->cmd_group->pipes[0]);
+			close(temp->cmd_group->pipes[1]);
+			temp = temp->next;
 		}
 	}
 }
@@ -135,7 +154,7 @@ t_log_group *execute_log(t_data *data, t_log_group *log_grp, int cur_level)
 
 			pipe_temp = pipe_temp->next;
 		}
-		close_pipes(log_temp);
+		// close_pipes(log_temp);
 		if(log_temp->next && log_temp->next->rec_depth < cur_level)
 		{
 			return log_temp;
