@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:38:44 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/15 15:09:40 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/15 15:10:09 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,9 +110,9 @@ void execute(t_pipe_group *pipe_grp, char **envp, char **pp)
 	}
 	else
 	{
-		if(pipe_grp->prev && pipe_grp->prev->cmd_group->pipes[0] > 1)
+		if(pipe_grp->prev && pipe_grp->prev->cmd_group->pipes[0] > 2)
 			close(pipe_grp->prev->cmd_group->pipes[0]);
-		if(temp_cmd->pipes[1] > 1)
+		if(temp_cmd->pipes[1] > 2)
 			close(temp_cmd->pipes[1]);
 		waitpid(temp_cmd->child, NULL, 0);
 	}
