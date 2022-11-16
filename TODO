@@ -1,2 +1,9 @@
 1 make function that checks lexical errors
     1 Add rule for parenthesis
+2 set env
+3 signals
+4 builtind
+5 here doc
+6 $?
+7 *
+8 execution by path

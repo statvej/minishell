@@ -45,13 +45,11 @@ void create_pipe_group(t_log_group *log_grp)
 	while (log_grp)
 	{
 		temp = token_delim_pipe(log_grp->tok_list, log_grp->tok_len, &len);
-		// print_ntoken(temp, len);
 		while(temp)
 		{
 			add_pipe_link(&log_grp->pipe_group, create_pipe_link(temp, len));		
 			temp = token_delim_pipe(log_grp->tok_list, log_grp->tok_len, &len);
 			i++;
-			// print_ntoken(temp, len);
 		}
 		log_grp = log_grp->next;
 	}

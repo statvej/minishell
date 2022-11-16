@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:38:44 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/15 15:10:09 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/16 17:35:09 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,7 @@ void process(t_cmd_group *cmd_grp, char **envp, char **pp)
 		perror("command doesn't exist");
 	}
 	else
-	{
-		fprintf(stderr, "before execve of cmd %s\n", cmd_grp->command);
 		execve(cmd_grp->command, cmd_grp->args, envp);
-		fprintf(stderr, "after execve\n");
-	}
 }
 
 void create_pipes(t_log_group *log_grp)
@@ -76,9 +72,10 @@ void create_pipes(t_log_group *log_grp)
 	}
 }
 
-void execute(t_pipe_group *pipe_grp, char **envp, char **pp)
+void execute(t_pipe_group *pipe_grp, t_data *data)
 {
 	t_cmd_group *temp_cmd;
+	int status;
 	
 	temp_cmd = pipe_grp->cmd_group;
 	temp_cmd->child = fork();
@@ -86,7 +83,6 @@ void execute(t_pipe_group *pipe_grp, char **envp, char **pp)
 	{
 		if(pipe_grp->next)
 		{
-			// fprintf("");
 			if ((dup2(temp_cmd->pipes[1], STDOUT_FILENO)) == -1)
 				perror("ERR_OUTFILE");
 		}
@@ -106,7 +102,7 @@ void execute(t_pipe_group *pipe_grp, char **envp, char **pp)
 			dup2(temp_cmd->out->val, STDOUT_FILENO);
 			temp_cmd->out = temp_cmd->out->next;
 		}
-		process(temp_cmd, envp, pp);
+		process(temp_cmd, data->envp, data->pos_paths);
 	}
 	else
 	{
@@ -114,7 +110,13 @@ void execute(t_pipe_group *pipe_grp, char **envp, char **pp)
 			close(pipe_grp->prev->cmd_group->pipes[0]);
 		if(temp_cmd->pipes[1] > 2)
 			close(temp_cmd->pipes[1]);
-		waitpid(temp_cmd->child, NULL, 0);
+		waitpid(temp_cmd->child, &status, 0);
+		//in case of success
+		if(status != 256)
+			data->last_log_ret = 1;
+		//in case of failer
+		else
+			data->last_log_ret = 0;
 	}
 }
 
@@ -146,30 +148,33 @@ t_log_group *execute_log(t_data *data, t_log_group *log_grp, int cur_level)
 		{
 			log_temp = execute_log(data, log_temp, cur_level + 1);
 		}
-		pipe_temp = log_temp->pipe_group;
-		create_pipes(log_temp);
-		while(pipe_temp)
-		{
-			execute(pipe_temp, data->envp, data->pos_paths);
+			if(log_temp->needs == -1 || data->last_log_ret == log_temp->needs)
+			{
+				pipe_temp = log_temp->pipe_group;
+				create_pipes(log_temp);
+				while(pipe_temp)
+				{
+					execute(pipe_temp, data);
 
-			pipe_temp = pipe_temp->next;
-		}
-		// close_pipes(log_temp);
+					pipe_temp = pipe_temp->next;
+				}
+				// close_pipes(log_temp);
+			}
 		if(log_temp->next && log_temp->next->rec_depth < cur_level)
 		{
-			return log_temp;
+			return log_temp->next;
 		}
 		log_temp = log_temp->next;
 	}
 	return NULL;
 }
 
-int execution(t_data *data, char **envp)
+int execution(t_data *data)
 {
 	int prev_depth;
 	
 	prev_depth = 0;
-	data->pos_paths = find_path(envp);
+	data->pos_paths = find_path(data->envp);
 	execute_log(data, data->log_grp, 0);
 	return 1;
 }

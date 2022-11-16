@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:24:25 by gpinchuk          #+#    #+#             */
-/*   Updated: 2022/11/15 14:38:11 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/16 17:42:55 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,7 +212,7 @@ int	check_lexical_errors(t_token_list *list);
 
 //execution
 
-int execution(t_data *data, char **envp);
+int execution(t_data *data);
 
 //Signals
 
@@ -221,5 +221,9 @@ void	sig_handle(int sig);
 //RECURSION DEPTH
 
 int set_recursion_depth(t_log_group *log_grp);
+
+//Environment
+
+char **set_env();
 
 #endif

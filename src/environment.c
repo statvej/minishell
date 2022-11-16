@@ -1,25 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_input.c                                       :+:      :+:    :+:   */
+/*   environment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/04 15:01:13 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/16 18:07:37 by fstaryk          ###   ########.fr       */
+/*   Created: 2022/11/16 17:39:41 by fstaryk           #+#    #+#             */
+/*   Updated: 2022/11/16 18:07:13 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-char	*read_input(void)
-{
-	char *ret;
-	char cwd[256];
-	
-	getcwd(cwd, sizeof(cwd));
-	ft_strcat(cwd, "  ");
-	ret = readline(cwd);
-	add_history(ret);
-    return ret;
-}
+// char **set_env()
+// {
+    
+// }

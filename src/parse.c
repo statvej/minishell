@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:03:34 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/14 19:49:23 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/16 14:38:33 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ t_data *parse(t_token_list ** global, char **env)
 
 	if(!global || !env)
 		return NULL;
-	// if(check_lexical_errors(*global) == ERROR)
-	// {
-	// 	perror("Lexical error");
-	// 	return NULL;
-	// }
+	if(check_lexical_errors(*global) == ERROR)
+	{
+		perror("Lexical error");
+		return NULL;
+	}
 	data = (t_data *)malloc(sizeof(t_data));   
 	data->envp = env;
 	data->log_grp = create_log_group(global);

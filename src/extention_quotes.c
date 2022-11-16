@@ -6,52 +6,13 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 14:18:13 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/10 13:44:17 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/16 14:38:06 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
-#include "minishell.h"
-
-//need to add option for $?
-// char	*extend(char *var, int len, char **env)
-// {
-// 	int i;
-// 	char *ret;
-// 	char *ext;
-// 	int var_len;
-	
-// 	i = 0;
-// 	var_len = 0;
-// 	ret = NULL;
-// 	while (var_len < len)
-// 	{
-// 		if(var[var_len] == '$')
-// 			break;
-// 		var_len++;
-// 	}
-// 	while (env[i])
-// 	{
-// 		if (ft_strncmp(var, env[i], var_len) == 0)
-// 		{
-// 			ret = ft_strdup(&env[i][var_len + 1]);
-// 			break;
-// 		}
-// 		i++;
-// 	}
-// 	i = 0;
-// 	while (var[i])
-// 	{
-// 		if (var[i] == '$' && var[i + 1])
-// 		{
-// 			ext = extend(&var[i + 1], len - i - 1, env);
-// 			ret = ft_strjoin(ret, ext);
-// 		}
-// 		i++;
-// 	}
-// 	return ret;
-// }
+#include "../inc/minishell.h"
 
 char *sub_extend(char *var, int len, char **env)
 {
@@ -100,7 +61,7 @@ char	*extend(char *var, int len, char **env)
 	
 }
 
-//need to add option for $?
+//need to add $?
 void open_extentions(t_token_list **tok_list, int tok_len, char **env)
 {
 	t_token_list *temp = *tok_list;
@@ -112,7 +73,7 @@ void open_extentions(t_token_list **tok_list, int tok_len, char **env)
 	while (temp && count < tok_len)
 	{
 		i = 0;
-		while (i < temp->len && (temp->type == TEXT ||  temp->type == DUP_QUOTES))
+		while (i < temp->len && (temp->type == TEXT ||  temp->type == DUP_QUOTES || temp->type == EXTENDED))
 		{
 			if (temp->tok[i] == '$')
 			{

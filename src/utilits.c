@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:36:32 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/08 14:05:06 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/16 14:34:45 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ char ** add_elem_to_strarr(char **strarr, char *str)
 	strarr_cpy(ret, strarr);
 	ret[size] = ft_strdup(str);
 	ret[size + 1] = NULL;
-	mx_print_strarr(ret, "|");
 	// free_strarr(strarr);
 	return ret;
 }
@@ -113,6 +112,4 @@ void strtoknjoin(t_token_list **start, int lenth)
 			ret->next->prev = ret;
 		}
 	}
-	// restore_tok_list(start);
-	fprintf(stderr, "poopoo\n");
 }

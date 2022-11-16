@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 17:33:45 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/14 14:59:07 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/16 14:34:21 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int open_redir(t_pipe_group *pipe)
 	temp = pipe->tok_list;
 	i = 0;
 	pipe->cmd_group = create_cmdgrp();
-	while (i < pipe->tok_len)
+	while (temp && i < pipe->tok_len)
 	{
 		if(temp->type == INPUT || temp->type == OUTPUT_APPEND \
 			|| temp->type == OUTPUT_OVER || temp->type == HERE_DOC)
@@ -60,7 +60,6 @@ int redirect(int type, char *file, int len, t_cmd_group **cmds)
 	
 	fd = -1;
 	str = ft_strndup(file, len);
-	printf("%s\n", str);
 	if (type == INPUT)
 	{
 		fd = open(str, O_RDONLY);
@@ -97,7 +96,7 @@ int count_args(t_token_list *list, int list_len){
     ac = 0;
     i = 0;
     list_temp = list;
-    while (i < list_len)
+    while (list_temp && i < list_len)
     {
         if(list_temp->type == TEXT || list_temp->type == EXTENDED)
             ac++;
@@ -120,9 +119,8 @@ int create_args(t_pipe_group *pipe)
     ac = count_args(list_temp, pipe->tok_len);
 	if(ac == 0)
 		return -1;
-	// printf("arg count is %d\n", ac);
     pipe->cmd_group->args = (char **)malloc(sizeof(char *) * (ac + 1));
-    while (i < pipe->tok_len)
+    while (list_temp && i < pipe->tok_len)
     {
         if(list_temp->type == TEXT || list_temp->type == EXTENDED)
         {
