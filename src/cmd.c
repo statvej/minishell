@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 17:33:45 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/16 14:34:21 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/17 18:08:53 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,14 @@ int redirect(int type, char *file, int len, t_cmd_group **cmds)
 	}
 	else if (type == HERE_DOC)
 	{
+		fd = open(".here_doc.tmp", O_WRONLY | O_CREAT, 0777);	
 		if((*cmds)->limit)
 			free((*cmds)->limit);
 		(*cmds)->limit = ft_strndup(str, len);
-		fd = 1;
+		fill_here_doc(fd, (*cmds)->limit);
+		fd = open(".here_doc.tmp", O_RDONLY);
+	
+		add_to_int_list(&(*cmds)->in, create_int_link(fd));	
 	}
 	if (fd < 0)
 		perror("ERROR WITH REDIRECTIONS");

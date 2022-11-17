@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:24:25 by gpinchuk          #+#    #+#             */
-/*   Updated: 2022/11/16 17:42:55 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/17 17:45:56 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct s_cmd_group
 {
 	char **args;
 	char *limit;
+	int here_pipes[2];
 	int	 pipes[2];
 	pid_t  child;
 	char *command;
@@ -203,6 +204,7 @@ int redirect(int type, char *file, int len, t_cmd_group **cmds);
 
 //extention quotes
 
+char	*extend(char *var, int len, char **env);
 void open_extentions(t_token_list **tok_list, int tok_len, char **env);
 void open_quotes(t_token_list **tok_list, int *tok_lenth);
 
@@ -225,5 +227,10 @@ int set_recursion_depth(t_log_group *log_grp);
 //Environment
 
 char **set_env();
+
+//HERE DOC
+
+void fill_here_doc(int fd, char *limit);
+int exists(const char *fname);
 
 #endif

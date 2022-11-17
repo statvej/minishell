@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:03:34 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/16 14:38:33 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/17 18:08:13 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,5 @@ t_data *parse(t_token_list ** global, char **env)
 	if(!parse_actions(data->log_grp, data))
 		return NULL;
 	// print_logic_grp(data->log_grp);
-
-	
-	
 	return data;
 }

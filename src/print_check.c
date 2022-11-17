@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 15:53:45 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/15 14:47:26 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/17 17:52:51 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ void print_pipe_group(t_pipe_group *pipe_grp)
 	while (pipe_grp)
 	{
 		printf("pipe link #%d\n", i);
-		print_ntoken(pipe_grp->tok_list, pipe_grp->tok_len, "\t");
-		// print_cmd(pipe_grp->cmd_group);
+		// print_ntoken(pipe_grp->tok_list, pipe_grp->tok_len, "\t");
+		print_cmd(pipe_grp->cmd_group);
 		pipe_grp = pipe_grp->next;
 		i++;
 	}	

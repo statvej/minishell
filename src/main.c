@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 14:53:37 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/16 18:07:26 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/17 14:27:55 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ int main(int argc, char **argv, char **envp)
 	// env = set_env();
 	while (true)
 	{
+		// printf("\033[0;36m");
 		comnd_table = read_input();
+		// printf("\033[0m");
         tokens = lexer(comnd_table);
 		if(!tokens)
 			continue;
