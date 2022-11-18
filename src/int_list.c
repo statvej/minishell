@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 18:13:28 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/09 18:39:29 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/18 14:31:22 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@ void add_to_int_list(t_int_list **list, t_int_list *to_add)
     temp->next = to_add;   
 }
 
-void free_int_list(t_int_list **list)
-{
-    t_int_list *temp;
+// void free_int_list(t_int_list **list)
+// {
+//     t_int_list *temp;
 
-    while ((*list))
-    {
-        temp = (*list);
-        free(temp);
-        *list = (*list)->next;
-    }
-}
+//     while ((*list))
+//     {
+//         temp = (*list);
+//         free(temp);
+//         *list = (*list)->next;
+//     }
+// }

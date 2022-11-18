@@ -6,25 +6,25 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:38:44 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/17 17:23:06 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/18 14:59:08 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-char **find_path(char **envp)
+char **find_path(void)
 {
 	int		i;
 	char	**path;
 
 	i = 0;
-	while (ft_strncmp("PATH", envp[i], 4))
+	while (ft_strncmp("PATH", g_env[i], 4))
 		i++;
-	path = ft_split(envp[i] + 5, ':');
+	path = ft_split(g_env[i] + 5, ':');
 	return (path);
 }
 
-char	*find_command(char **path, char *command, char **env)
+char	*find_command(char **path, char *command)
 {
 	int		i;
 	char	*result;	
@@ -35,7 +35,7 @@ char	*find_command(char **path, char *command, char **env)
 	if(!access(command, F_OK))
 		return command;
 	//for relative path
-	pwd = extend("PWD", 3, env);
+	pwd = extend("PWD", 3);
 	result = ft_strjoin(pwd, command);
 	if(!access(result, F_OK))
 	{
@@ -61,16 +61,16 @@ char	*find_command(char **path, char *command, char **env)
 	return (0);
 }
 
-void process(t_cmd_group *cmd_grp, char **envp, char **pp)
+void process(t_cmd_group *cmd_grp, char **pp)
 {
-	cmd_grp->command = find_command(pp, cmd_grp->args[0], envp);
+	cmd_grp->command = find_command(pp, cmd_grp->args[0]);
 	
 	if (!cmd_grp->command)
 	{
 		perror("command doesn't exist");
 	}
 	else
-		execve(cmd_grp->command, cmd_grp->args, envp);
+		execve(cmd_grp->command, cmd_grp->args, g_env);
 }
 
 void create_pipes(t_log_group *log_grp)
@@ -113,7 +113,7 @@ void execute(t_pipe_group *pipe_grp, t_data *data)
 			dup2(temp_cmd->out->val, STDOUT_FILENO);
 			temp_cmd->out = temp_cmd->out->next;
 		}
-			process(temp_cmd, data->envp, data->pos_paths);
+			process(temp_cmd, data->pos_paths);
 	}
 	else
 	{
@@ -169,7 +169,7 @@ int execution(t_data *data)
 	int prev_depth;
 	
 	prev_depth = 0;
-	data->pos_paths = find_path(data->envp);
+	data->pos_paths = find_path();
 	execute_log(data, data->log_grp, 0);
 	return 1;
 }

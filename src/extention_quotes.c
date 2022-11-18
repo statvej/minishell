@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 14:18:13 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/16 14:38:06 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/18 15:00:39 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #include "../inc/minishell.h"
 
-char *sub_extend(char *var, int len, char **env)
+char *sub_extend(char *var, int len)
 {
 	int i;
 	char *ret;
@@ -29,18 +29,18 @@ char *sub_extend(char *var, int len, char **env)
 			break;
 		var_len++;
 	}
-	while (env[i])
+	while (g_env[i])
 	{
-		if (ft_strncmp(var, env[i], var_len) == 0)
+		if (ft_strncmp(var, g_env[i], var_len) == 0)
 		{
-			return ft_strdup(&env[i][var_len + 1]);
+			return ft_strdup(&g_env[i][var_len + 1]);
 		}
 		i++;
 	}
 	return NULL;
 }
 
-char	*extend(char *var, int len, char **env)
+char	*extend(char *var, int len)
 {
 	char *ext;
 	char *ret;
@@ -52,7 +52,7 @@ char	*extend(char *var, int len, char **env)
 	{
 		if(var[i] == '$')
 		{
-			ext = sub_extend(&var[i + 1], len - i - 1, env);
+			ext = sub_extend(&var[i + 1], len - i - 1);
 			ret = ft_strnnjoin(ret, ft_strlen(ret), ext, ft_strlen(ext));
 		}
 		i++;
@@ -62,7 +62,7 @@ char	*extend(char *var, int len, char **env)
 }
 
 //need to add $?
-void open_extentions(t_token_list **tok_list, int tok_len, char **env)
+void open_extentions(t_token_list **tok_list, int tok_len)
 {
 	t_token_list *temp = *tok_list;
 	int i;
@@ -77,7 +77,7 @@ void open_extentions(t_token_list **tok_list, int tok_len, char **env)
 		{
 			if (temp->tok[i] == '$')
 			{
-				ext = extend(&temp->tok[i], temp->len - i, env);			
+				ext = extend(&temp->tok[i], temp->len - i);			
 				temp->tok = ft_strnnjoin(temp->tok, i, ext, ft_strlen(ext));
 				temp->len = ft_strlen(temp->tok);
 				if (temp->type == TEXT)

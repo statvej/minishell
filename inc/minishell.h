@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:24:25 by gpinchuk          #+#    #+#             */
-/*   Updated: 2022/11/17 17:45:56 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/18 16:25:04 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,12 @@
 # define SEPAR_PIPE 16
 # define EXTENDED 17
 # define REDIRECTIONS 18
+
+typedef struct s_env
+{
+	char*	val;
+	struct s_env *next; 
+}t_env;
 
 typedef struct s_int_list
 {
@@ -115,12 +121,13 @@ typedef struct s_data
 	t_log_group *log_grp;
 	int last_log_ret;
 	char **pos_paths;
-	char **envp;
 }t_data;
+
+char ** g_env;
 
 //Destroy
 
-// void	free_data(t_data *data);
+void free_data_in_loop(t_data *data);
 
 //Reading Input
 
@@ -132,7 +139,7 @@ t_token_list *lexer(char *input);
 
 //Parse
 
-t_data	*parse(t_token_list ** global, char **env);
+t_data	*parse(t_token_list ** global);
 // t_data	*parse(char *input, char **envp);
 
 //Quotes
@@ -204,8 +211,8 @@ int redirect(int type, char *file, int len, t_cmd_group **cmds);
 
 //extention quotes
 
-char	*extend(char *var, int len, char **env);
-void open_extentions(t_token_list **tok_list, int tok_len, char **env);
+char	*extend(char *var, int len);
+void open_extentions(t_token_list **tok_list, int tok_len);
 void open_quotes(t_token_list **tok_list, int *tok_lenth);
 
 //lexical errors
@@ -232,5 +239,10 @@ char **set_env();
 
 void fill_here_doc(int fd, char *limit);
 int exists(const char *fname);
+
+//ENV
+char **create_env(char **env);
+int size_of_env();
+char **realloc_env(char *string, size_t new_size);
 
 #endif
