@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:24:25 by gpinchuk          #+#    #+#             */
-/*   Updated: 2022/11/18 16:25:04 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/19 19:18:43 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ t_token_list *lexer(char *input);
 
 //Parse
 
-t_data	*parse(t_token_list ** global);
+t_data	*parse(t_token_list ** global, int last_ret);
 // t_data	*parse(char *input, char **envp);
 
 //Quotes
@@ -153,12 +153,12 @@ int parse_actions(t_log_group *log_grp, t_data *data);
 
 t_token_list	*create_token(int length, char *start, int type);
 void			add_token(t_token_list **first, t_token_list * to_add);
-t_token_list *token_delim_logic(t_token_list **global, int *len, int *needs);
+t_token_list *token_delim_logic(t_token_list *global, int *len, int *needs);
 t_token_list *token_delim_pipe(t_token_list *global, int log_len, int *pipe_len);
 
 //LOG GROUP STRUCT
 
-t_log_group *create_log_group(t_token_list **global);
+t_log_group *create_log_group(t_token_list *global);
 t_log_group *create_log_link(t_token_list *tok_list, int tok_len, int needs);
 void add_log_link(t_log_group **first, t_log_group *to_add);
 
@@ -193,6 +193,7 @@ void print_logic_grp(t_log_group *log_grp);
 void print_ntoken(t_token_list *token, int n, char * depth);
 void			print_token(t_token_list *token);
 void print_cmd(t_cmd_group *cmd_grp);
+void printBits(size_t const size, void const * const ptr);
 
 // void print_data(t_data *data);
 
@@ -211,8 +212,8 @@ int redirect(int type, char *file, int len, t_cmd_group **cmds);
 
 //extention quotes
 
-char	*extend(char *var, int len);
-void open_extentions(t_token_list **tok_list, int tok_len);
+char	*extend(char *var, int len, int last_ret);
+void open_extentions(t_token_list **tok_list, int tok_len, int last_ret);
 void open_quotes(t_token_list **tok_list, int *tok_lenth);
 
 //lexical errors
@@ -243,6 +244,21 @@ int exists(const char *fname);
 //ENV
 char **create_env(char **env);
 int size_of_env();
-char **realloc_env(char *string, size_t new_size);
+char **realloc_env(size_t size);
+int compare_key(char *env, char *string);
+int find_keyword(char *keyword);
+
+//CHECKERS
+
+int is_group(t_token_list *list);
+int is_log_group(t_token_list *list);
+int is_prnth(t_token_list *list);
+int is_redir(t_token_list *list);
+
+//BUILTINS
+int check_builtin(t_cmd_group *temp_cmd);
+int pwd(void);
+int env(void);
+int unset(char **args);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 14:18:13 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/18 15:00:39 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/19 17:01:05 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,13 @@ char *sub_extend(char *var, int len)
 	return NULL;
 }
 
-char	*extend(char *var, int len)
+
+
+char	*extend(char *var, int len, int last_ret)
 {
 	char *ext;
 	char *ret;
+	char *to_free;
 	int i;
 
 	i = 0;
@@ -52,17 +55,22 @@ char	*extend(char *var, int len)
 	{
 		if(var[i] == '$')
 		{
-			ext = sub_extend(&var[i + 1], len - i - 1);
+			if(var[i + 1] == '?')
+				ext = ft_itoa(last_ret);			
+			else
+				ext = sub_extend(&var[i + 1], len - i - 1);
+			to_free = ret;
 			ret = ft_strnnjoin(ret, ft_strlen(ret), ext, ft_strlen(ext));
+			free(to_free);
+			free(ext);
 		}
 		i++;
 	}
 	return ret;
-	
 }
 
 //need to add $?
-void open_extentions(t_token_list **tok_list, int tok_len)
+void open_extentions(t_token_list **tok_list, int tok_len, int last_ret)
 {
 	t_token_list *temp = *tok_list;
 	int i;
@@ -77,7 +85,7 @@ void open_extentions(t_token_list **tok_list, int tok_len)
 		{
 			if (temp->tok[i] == '$')
 			{
-				ext = extend(&temp->tok[i], temp->len - i);			
+				ext = extend(&temp->tok[i], temp->len - i, last_ret);			
 				temp->tok = ft_strnnjoin(temp->tok, i, ext, ft_strlen(ext));
 				temp->len = ft_strlen(temp->tok);
 				if (temp->type == TEXT)

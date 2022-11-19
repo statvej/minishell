@@ -6,46 +6,11 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:42:39 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/17 14:41:24 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/19 14:47:51 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-
-int is_group(t_token_list *list)
-{
-	if(list->type == PIPE || list->type == LOGICAL_AND ||
-		 list->type == LOGICAL_OR)
-		return 1;
-	else
-		return 0;
-}
-
-int is_log_group(t_token_list *list)
-{
-	if(list->type == LOGICAL_AND || list->type == LOGICAL_OR)
-		return 1;
-	else
-		return 0;
-}
-
-int is_prnth(t_token_list *list)
-{
-	if(list->type == PRNTH_RIGHT || list->type == PRNTH_LEFT)
-		return 1;
-	else
-		return 0;
-}
-
-int is_redir(t_token_list *list)
-{
-	if(list->type == OUTPUT_APPEND || list->type == OUTPUT_OVER ||
-		 list->type == INPUT || list->type == HERE_DOC)
-		return 1;
-	else
-		return 0;
-}
 
 // logic and pipe groups
 int check_groups_pos_content(t_token_list *list)
@@ -84,7 +49,8 @@ int check_tok_content(t_token_list *list)
 		if((list->type == OUTPUT_OVER || list->type == INPUT) && list->len != 1)
 			return -1;	
 		if(is_prnth(list) && is_prnth(list->next))
-			return -1;
+			if(list->type != list->next->type)
+				return -1;
 		list = list->next;
 	}
 	return 1;
@@ -150,8 +116,8 @@ int	check_lexical_errors(t_token_list *list)
 {
 	if(check_groups_pos_content(list) == -1)
 		return -1;
-	if(check_tok_content(list) == -1)
-		return -1;
+	// if(check_tok_content(list) == -1)
+	// 	return -1;
 	// if(check_redir_dest(list) == -1)
 	// 	return -1;
 	if(check_prnth_location(list) == -1)

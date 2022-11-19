@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:03:34 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/18 15:01:26 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/19 16:51:16 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 
 
-t_data *parse(t_token_list ** global)
+t_data *parse(t_token_list ** global, int last_ret)
 {
 	t_data *data;
 
@@ -25,8 +25,9 @@ t_data *parse(t_token_list ** global)
 		perror("Lexical error");
 		return NULL;
 	}
-	data = (t_data *)malloc(sizeof(t_data));   
-	data->log_grp = create_log_group(global);
+	data = (t_data *)malloc(sizeof(t_data));  
+	data->last_log_ret = last_ret; 
+	data->log_grp = create_log_group(*global);
 	set_recursion_depth(data->log_grp);
 	create_pipe_group(data->log_grp);
 	if(!parse_actions(data->log_grp, data))

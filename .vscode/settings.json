@@ -20,7 +20,12 @@
         "string_view": "c",
         "vector": "c",
         "__locale": "c",
-        "ios": "c"
+        "ios": "c",
+        "__split_buffer": "c",
+        "bitset": "c",
+        "initializer_list": "c",
+        "unordered_map": "c",
+        "sstream": "c"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

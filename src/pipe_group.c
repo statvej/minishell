@@ -38,7 +38,7 @@ void create_pipe_group(t_log_group *log_grp)
 {
 	t_token_list *temp;
 	int len;
-	int i=0;
+	int i = 0;
 
 	if(!log_grp)
 		return ;

@@ -6,13 +6,13 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 17:36:08 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/16 14:24:29 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/19 17:41:17 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 //added restoration of global token
-t_log_group *create_log_group(t_token_list **global)
+t_log_group *create_log_group(t_token_list *global)
 {
 	t_log_group *ret;
 	int len;
@@ -28,7 +28,9 @@ t_log_group *create_log_group(t_token_list **global)
 		add_log_link(&ret, create_log_link(temp_tok, len, needs));
         temp_tok = token_delim_logic(global, &len, &needs);
     }
-	restore_tok_list(global);
+	//to reset values
+	token_delim_logic(NULL, NULL, NULL);
+	// restore_tok_list(global);
 	return ret;
 }
 

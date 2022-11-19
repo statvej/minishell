@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 15:53:45 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/17 17:52:51 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/19 15:11:20 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,12 @@ void print_logic_grp(t_log_group *log_grp)
 	{
 		i = 0;
 		printf("tokens in group %d\n", log_grp->tok_len);
-		// print_ntoken(log_grp->tok_list, log_grp->tok_len, "");
+		print_ntoken(log_grp->tok_list, log_grp->tok_len, "");
 		printf("\n");
 		printf("group needs %d", log_grp->needs);
 		printf("\n");
 		printf("recursion depth is %d\n", log_grp->rec_depth);
-		print_pipe_group(log_grp->pipe_group);
+		// print_pipe_group(log_grp->pipe_group);
 		printf("\n");
 		log_grp = log_grp->next;
 	}
@@ -130,4 +130,19 @@ void print_cmd(t_cmd_group *cmd_grp)
 	printf("\nlimit is : %s\nargs are : ", cmd_grp->limit);
 	mx_print_strarr(cmd_grp->args, " ");
 	fprintf(stderr, "\n");
+}
+
+void printBits(size_t const size, void const * const ptr)
+{
+    unsigned char *b = (unsigned char*) ptr;
+    unsigned char byte;
+    int i, j;
+    
+    for (i = size-1; i >= 0; i--) {
+        for (j = 7; j >= 0; j--) {
+            byte = (b[i] >> j) & 1;
+            printf("%u", byte);
+        }
+    }
+    puts("");
 }

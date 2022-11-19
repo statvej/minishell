@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:57 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/16 14:23:39 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/19 17:40:41 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,53 +48,100 @@ void add_token(t_token_list **first, t_token_list * to_add)
 	to_add->prev = temp;
 }
 
-t_token_list *token_delim_logic(t_token_list **global, int *len, int *needs)
-{
-	t_token_list *temp;
-	temp = *global;
-	int i;
-	static int solo;
+/* VERSION 1*/
 
+// t_token_list *token_delim_logic(t_token_list **global, int *len, int *needs)
+// {
+// 	t_token_list *temp;
+// 	temp = *global;
+// 	int i;
+// 	static int solo;
+
+// 	i = 0;
+// 	if(!global || solo == 1)
+// 	{
+// 		solo = 0;
+// 		return NULL;
+// 	}
+// 	if((*global)->next == NULL && (*global)->prev == NULL)
+// 	{
+// 		*len = 1;
+// 		*needs = -1;
+// 		solo = 1;
+// 		return temp;
+// 	}
+// 	// else if((*global)->next == NULL)
+// 	// 	return NULL;
+// 	if ((*global)->prev == NULL)
+// 		*needs = -1;
+// 	else if((*global)->prev->type == LOGICAL_AND)
+// 		*needs = 1;
+// 	else if((*global)->prev->type == LOGICAL_OR)
+// 		*needs = 0;
+// 	while((*global)->type != LOGICAL_OR && (*global)->type != LOGICAL_AND)
+// 	{
+// 		if ((*global)->next == NULL)
+// 		{
+// 			i++;
+// 			*len = i;
+// 			return temp;
+// 		}
+// 		i++;
+// 		*global = (*global)->next;
+// 	}
+// 	*len = i;
+// 	if(!(*global)->next)
+// 		{
+// 			perror ("syntax error");
+// 			return 0;
+// 		}
+// 	*global = (*global)->next;
+// 	return temp;
+// }
+
+/* VERSION 2*/
+
+t_token_list *token_delim_logic(t_token_list *global, int *len, int *needs)
+{
+	static int count;
+	int i;
+	t_token_list *ret;
+	
+	if(!len && !needs)
+	{
+		count = 0;
+		return NULL;
+	}
+	if(!global)
+		return NULL;
 	i = 0;
-	if(!global || solo == 1)
+	//coming to the pointed from last itteration 
+	while (global && i < count)
 	{
-		solo = 0;
-		return NULL;
-	}
-	if((*global)->next == NULL && (*global)->prev == NULL)
-	{
-		*len = 1;
-		*needs = -1;
-		solo = 1;
-		return temp;
-	}
-	else if((*global)->next == NULL)
-		return NULL;
-	if ((*global)->prev == NULL)
-		*needs = -1;
-	else if((*global)->prev->type == LOGICAL_AND)
-		*needs = 1;
-	else if((*global)->prev->type == LOGICAL_OR)
-		*needs = 0;
-	while((*global)->type != LOGICAL_OR && (*global)->type != LOGICAL_AND)
-	{
-		if ((*global)->next == NULL)
-		{
-			i++;
-			*len = i;
-			return temp;
-		}
 		i++;
-		*global = (*global)->next;
+		global = global->next;
 	}
-	*len = i;
-	if(!(*global)->next)
-		{
-			perror ("syntax error");
-			return 0;
-		}
-	*global = (*global)->next;
-	return temp;
+	if(!global)
+		return NULL;
+	ret = global;
+	if (global->prev == NULL)
+		*needs = -1;
+	else if(global->prev->type == LOGICAL_AND)
+		*needs = 1;
+	else if(global->prev->type == LOGICAL_OR)
+		*needs = 0;
+	i = 1;
+	while (global && !is_log_group(global))
+	{
+		global = global->next;
+		i++;
+		count++;
+	}
+	//count ++ for junping over "|"
+	count++;
+	//--len for not counting "|" as we already encountered it
+	*len = --i;
+	return ret;
 }
 
 //Before pipe it leaves one extra space

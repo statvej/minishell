@@ -64,25 +64,69 @@ int size_of_env()
 	return i;
 }
 
-char **realloc_env(char *string, size_t new_size)
+int find_index_of_char(char *env, char c)
 {
-	char** new_env;
+	char	*ch;
+
+	ch = ft_strchr(env, c);
+	if (!ch)
+		return (-1);
+	return ((size_t)(ch - env));
+}
+
+int find_keyword(char *keyword)
+{
+	int i;
+	int index;
+	char *sub;
+
+	i = 0;
+	if (!keyword)
+		return(-1);
+	while (g_env[i])
+	{
+		if ((index = find_index_of_char(g_env[i], '=')) == -1)
+			index = ft_strlen(g_env[i]);
+		if ((sub = ft_substr(g_env[i], 0, index)))
+		{	
+			if(ft_strcmp(sub, keyword) == 0)
+			{
+				free(sub);
+				return i;
+			}
+			free(sub);
+		}
+		i++;
+	}
+	return -1;
+}
+
+char *get_env(char *env)
+{
 	int i;
 	int j;
 
-	if(new_size < size_of_env())
-		j = 0;
+	j = ft_strlen(env);
+	if((i = find_keyword(env)) != -1)
+		return(ft_substr(g_env[i], (j + 1), ft_strlen(g_env[i])));
 	else
-		j = 1;
-	new_env = (char **)malloc(sizeof(char *) * (new_size + 1));
+		return NULL;
+
+}
+
+char **realloc_env(size_t size)
+{
+	char **new_env;
+	int i;
+
+	new_env = (char **)malloc(sizeof(char *) * (size + 1));
 	i = 0;
 	while (g_env[i])
 	{
 		new_env[i] = ft_strdup(g_env[i]);
 		i++;
 	}
-	new_env[i] = NULL;
+	new_env[i] = 0;
 	free_strarr(g_env);
-	//print_env(new_env);
 	return new_env;
 }

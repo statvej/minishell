@@ -3,8 +3,8 @@
 *done*  2 set env
 3 signals (do after builtins)
 4 builtind
-5 here doc *almost*
-6 $?
+*done*  5 here doc *almost*
+*done*  6 $?
 7 *
 *done*  8 execution by path
 *done*  9 Free data

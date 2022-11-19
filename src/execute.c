@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:38:44 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/18 14:59:08 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/19 19:29:19 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*find_command(char **path, char *command)
 	if(!access(command, F_OK))
 		return command;
 	//for relative path
-	pwd = extend("PWD", 3);
+	pwd = extend("PWD", 3, 0);
 	result = ft_strjoin(pwd, command);
 	if(!access(result, F_OK))
 	{
@@ -88,6 +88,8 @@ void create_pipes(t_log_group *log_grp)
 	}
 }
 
+
+
 void execute(t_pipe_group *pipe_grp, t_data *data)
 {
 	t_cmd_group *temp_cmd;
@@ -113,21 +115,17 @@ void execute(t_pipe_group *pipe_grp, t_data *data)
 			dup2(temp_cmd->out->val, STDOUT_FILENO);
 			temp_cmd->out = temp_cmd->out->next;
 		}
-			process(temp_cmd, data->pos_paths);
+		process(temp_cmd, data->pos_paths);
 	}
 	else
 	{
+		check_builtin(temp_cmd);
 		if(pipe_grp->prev && pipe_grp->prev->cmd_group->pipes[0] > 2)
 			close(pipe_grp->prev->cmd_group->pipes[0]);
 		if(temp_cmd->pipes[1] > 2)
 			close(temp_cmd->pipes[1]);
 		waitpid(temp_cmd->child, &status, 0);
-		//in case of success
-		if(status != 256)
-			data->last_log_ret = 1;
-		//in case of failer
-		else
-			data->last_log_ret = 0;
+		data->last_log_ret = status;
 	}
 }
 
@@ -144,8 +142,12 @@ t_log_group *execute_log(t_data *data, t_log_group *log_grp, int cur_level)
 		if(log_temp->rec_depth > cur_level)
 		{
 			log_temp = execute_log(data, log_temp, cur_level + 1);
+			if(!log_temp)
+				return NULL;
 		}
-			if(log_temp->needs == -1 || data->last_log_ret == log_temp->needs)
+		if(log_temp->needs == -1 ||
+				(data->last_log_ret != 256 && log_temp->needs == 1)
+					|| (data->last_log_ret == 256 && log_temp->needs == 0))
 			{
 				pipe_temp = log_temp->pipe_group;
 				create_pipes(log_temp);
@@ -154,7 +156,9 @@ t_log_group *execute_log(t_data *data, t_log_group *log_grp, int cur_level)
 					execute(pipe_temp, data);
 					pipe_temp = pipe_temp->next;
 				}
-			}
+		}
+		else if(log_temp->rec_depth != 0)
+			return NULL;
 		if(log_temp->next && log_temp->next->rec_depth < cur_level)
 		{
 			return log_temp->next;

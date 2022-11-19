@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:44:28 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/18 15:01:51 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/19 16:55:18 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int parse_actions(t_log_group *log_grp, t_data *data)
 		temp_pipe = temp->pipe_group;
 		while(temp_pipe)
 		{
-			open_extentions(&temp_pipe->tok_list, temp_pipe->tok_len);
+			open_extentions(&temp_pipe->tok_list, temp_pipe->tok_len, data->last_log_ret);
 			open_quotes(&temp_pipe->tok_list, &temp_pipe->tok_len);
 			if(open_redir(temp_pipe) == -1)
 				return (-1);
