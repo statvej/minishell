@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 11:34:23 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/09/18 16:23:12 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/22 20:09:05 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 char	*ft_strchr(const char *s, int c)
 {
-	
+	// fprintf(stderr, "ia loh ebany before check in func\n");
 	if (!ft_isascii(c))
 		return ((char *)s);
+	// fprintf(stderr, "ia loh ebany before loop in func\n");
 	while (*s)
 	{
 		if (*s == c)

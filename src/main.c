@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 14:53:37 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/19 17:32:54 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/22 15:03:33 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,17 @@ int main(int argc, char **argv, char **envp)
 	int last_ret;
 	(void)argc;
 	(void)argv;
+	(void)envp;
 	// signal(SIGQUIT, sig_handle);
 	// signal(SIGINT, sig_handle);
+	// char *env_custom[] = {
+    //         "HOME=ia doma",
+    //         "PWD=/Users/fstaryk/Desktop/minishell",
+	// 		"PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki:/Library/Apple/usr/bin:/Applications/Visual Studio Code.app/Contents/Resources/app/bin:/Applications/Visual Studio Code.app/Contents/Resources/app/bin",
+    //         "SHELL=minishell", 
+	// 		NULL};
 	g_env = create_env(envp);
+	//print_env();
 	last_ret = 0;
 	while (true)
 	{
@@ -42,7 +50,6 @@ int main(int argc, char **argv, char **envp)
 		}
 		execution(data);
 		free_data_in_loop(data);
-		// exit(0);
 	}
 
 	

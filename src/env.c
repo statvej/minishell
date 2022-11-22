@@ -2,14 +2,24 @@
 
 #include "../inc/minishell.h"
 
-void print_env(char **env)
+void print_env()
 {
-	int i = 0;
-	while(env[i])
+	size_t	i;
+
+	i = 0;
+	ft_putchar_fd('\n', 2);
+	while (g_env[i])
 	{
-		fprintf(stderr, "%s\n", env[i]);
+		// fprintf(stderr, "ia loh ebany in zalupa\n", g_env[i]);
+		// fprintf(stderr, "%s\n", g_env[i]);
+		if (ft_strchr(g_env[i], '='))
+		{
+			ft_putstr_fd(g_env[i], 2);
+			ft_putchar_fd('\n', 2);
+		}
 		i++;
 	}
+	//ft_putchar_fd('\n', 1);
 }
 
 char *shell_lvl(char *env_lvl)
@@ -37,20 +47,19 @@ char **create_env(char **env)
 	i = 0;
 	while(env[i])
 		i++;
-	new_env = (char **)malloc(sizeof(char *) * (i + 1));
+	// printf("%d\n", i);
+	new_env = (char **)ft_calloc(sizeof(char *), (i + 1));
 	i = 0;
 	while (env[i])
 	{
 		if(ft_strncmp("SHLVL", env[i], 5) == 0)
-		{
 			new_env[i] = shell_lvl(env[i]);
-		}
 		else
 			new_env[i] = ft_strdup(env[i]);
 		i++;
 	}
 	new_env[i] = NULL;
-	//print_env(new_env);
+	// mx_print_strarr(new_env, "\n");
 	return new_env;
 }
 
@@ -119,14 +128,14 @@ char **realloc_env(size_t size)
 	char **new_env;
 	int i;
 
-	new_env = (char **)malloc(sizeof(char *) * (size + 1));
+	new_env = (char **)ft_calloc(sizeof(char *), (size + 1));
 	i = 0;
-	while (g_env[i])
+	while (g_env[i] && i < (int)size)
 	{
 		new_env[i] = ft_strdup(g_env[i]);
 		i++;
 	}
-	new_env[i] = 0;
+	new_env[i] = NULL;
 	free_strarr(g_env);
-	return new_env;
+	return (new_env);
 }

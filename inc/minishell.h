@@ -6,13 +6,14 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:24:25 by gpinchuk          #+#    #+#             */
-/*   Updated: 2022/11/19 19:18:43 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/22 18:25:07 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <dirent.h>
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdbool.h>
@@ -39,6 +40,9 @@
 # define OPENED 0
 # define CLOSED 1 
 
+# define STRICT_START 1
+# define STRICT_END 2
+
 //TOKEN TYPES
 
 # define TEXT 0
@@ -60,6 +64,9 @@
 # define SEPAR_PIPE 16
 # define EXTENDED 17
 # define REDIRECTIONS 18
+# define WILDCARD_REMOVE 19
+
+typedef struct dirent t_dirent;
 
 typedef struct s_env
 {
@@ -73,6 +80,13 @@ typedef struct s_int_list
 	struct s_int_list *next; 
 }t_int_list;
 
+typedef struct s_str_list
+{
+	char *str;
+	int len;
+	int strict;
+	struct s_str_list *next; 
+}t_str_list;
 
 typedef struct s_token_list
 {
@@ -123,7 +137,7 @@ typedef struct s_data
 	char **pos_paths;
 }t_data;
 
-char ** g_env;
+char **g_env;
 
 //Destroy
 
@@ -194,6 +208,7 @@ void print_ntoken(t_token_list *token, int n, char * depth);
 void			print_token(t_token_list *token);
 void print_cmd(t_cmd_group *cmd_grp);
 void printBits(size_t const size, void const * const ptr);
+void print_check_str_list(t_str_list *list);
 
 // void print_data(t_data *data);
 
@@ -244,6 +259,8 @@ int exists(const char *fname);
 //ENV
 char **create_env(char **env);
 int size_of_env();
+void print_env();
+int find_index_of_char(char *env, char c);
 char **realloc_env(size_t size);
 int compare_key(char *env, char *string);
 int find_keyword(char *keyword);
@@ -257,8 +274,21 @@ int is_redir(t_token_list *list);
 
 //BUILTINS
 int check_builtin(t_cmd_group *temp_cmd);
-int pwd(void);
-int env(void);
-int unset(char **args);
+int exec_buin(t_cmd_group *temp_cmd);
+int b_pwd(void);
+int b_env(void);
+int b_echo(char **args);
+int b_export(char **args);
+int b_unset(char **args);
+
+//String list func
+
+t_str_list *create_str_link(char *str, int len, int strict);
+void add_to_str_list(t_str_list **list, t_str_list *to_add);
+void free_str_list(t_str_list **list);
+
+//Wildcards
+
+int extend_wildcards(t_token_list *tok_list);
 
 #endif

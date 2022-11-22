@@ -1,31 +1,3 @@
 {
-    "files.associations": {
-        "minishell.h": "c",
-        "__functional_base": "c",
-        "__functional_base_03": "c",
-        "__hash_table": "c",
-        "__tuple": "c",
-        "algorithm": "c",
-        "array": "c",
-        "chrono": "c",
-        "type_traits": "c",
-        "functional": "c",
-        "iterator": "c",
-        "limits": "c",
-        "memory": "c",
-        "ratio": "c",
-        "tuple": "c",
-        "utility": "c",
-        "string": "c",
-        "string_view": "c",
-        "vector": "c",
-        "__locale": "c",
-        "ios": "c",
-        "__split_buffer": "c",
-        "bitset": "c",
-        "initializer_list": "c",
-        "unordered_map": "c",
-        "sstream": "c"
-    },
     "C_Cpp.errorSquiggles": "Disabled"
 }

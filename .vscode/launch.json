@@ -1,7 +1,7 @@
 {
     "version": "0.2.0",
     "configurations": [
-        
+
         {
             "name": "(lldb) minishel",
             "type": "cppdbg",
@@ -9,7 +9,7 @@
             "program": "${workspaceFolder}/minishell",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${fileDirname}",
+            "cwd": "${fileDirname}/..",
             "environment": [],
             "externalConsole": true,
             "MIMode": "lldb"
