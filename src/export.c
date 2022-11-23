@@ -39,7 +39,7 @@ void change_env(char *arg, int index)
 {
 	free(g_env[index]);
 	g_env[index] = ft_strdup(arg);
-	// realloc_env(size_of_env());
+	free(arg);
 }
 
 void set_new(char *arg)

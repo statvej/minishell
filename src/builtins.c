@@ -27,6 +27,8 @@ int check_builtin(t_cmd_group *temp_cmd)
 		return (4);
 	else if(ft_strcmp(temp_cmd->args[0], "export") == 0)
 		return (5);
+	else if(ft_strcmp(temp_cmd->args[0], "cd") == 0)
+		return (6);
 	return -1;
 }
 
@@ -42,7 +44,8 @@ int exec_buin(t_cmd_group *temp_cmd)
 		return (b_echo(temp_cmd->args));
 	else if(ft_strcmp(temp_cmd->args[0], "export") == 0)
 		return (b_export(&temp_cmd->args[1]));
-	
+	else if(ft_strcmp(temp_cmd->args[0], "cd") == 0)
+		return (b_cd(temp_cmd->args[1]));
 	return -1;
 }
 
