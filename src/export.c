@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:54:55 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/22 20:16:20 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/23 18:18:34 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int check_keyword(char *args)
 
 void change_env(char *arg, int index)
 {
+	
 	free(g_env[index]);
 	g_env[index] = ft_strdup(arg);
 	free(arg);
@@ -65,7 +66,6 @@ void set_new(char *arg)
 	free(end);
 }
 
-
 void add_env(char *arg)
 {
 	int indx;
@@ -88,8 +88,7 @@ int b_export(char **args)
 
 	if (!args[0])
 	{
-		//print_export();
-		printf("I");
+		print_export();
 		return(1);
 	}
 	i = 0;

@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:24:25 by gpinchuk          #+#    #+#             */
-/*   Updated: 2022/11/23 16:13:57 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/23 18:25:25 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ typedef struct s_log_group
 
 typedef struct s_data	
 {
+	char *input;
 	t_log_group *log_grp;
 	int last_log_ret;
 	char **pos_paths;
@@ -262,6 +263,7 @@ char **create_env(char **env);
 int size_of_env();
 void print_env();
 char *get_env(char *env);
+void set_new(char *arg);
 void change_env(char *arg, int index);
 int find_index_of_char(char *env, char c);
 char **realloc_env(size_t size);
@@ -277,13 +279,15 @@ int is_redir(t_token_list *list);
 
 //BUILTINS
 int check_builtin(t_cmd_group *temp_cmd);
-int exec_buin(t_cmd_group *temp_cmd);
+int exec_buin(t_cmd_group *temp_cmd, t_data *data);
 int b_pwd(void);
 int b_env(void);
 int b_cd (char *arg);
-int b_echo(char **args);
-int b_export(char **args);
+int 	b_echo(char **args);
+int 	b_export(char **args);
+void	print_export();
 int b_unset(char **args);
+int b_exit(char **av, t_data *data);
 
 //String list func
 

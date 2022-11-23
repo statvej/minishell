@@ -4,15 +4,26 @@ int change_dir(char *arg)
 {
 	char *sub;
 	char *temp;
+	int i;
+	char *str1;
+	char *str2;
 
 	sub = getcwd(0, 256);
 	if(chdir(arg) == ERROR)
 		return (-1);
 	temp = getcwd(0, 256);
-	sub = ft_strjoin("OLDPWD=", sub);
-	temp = ft_strjoin("PWD=", temp);
-	change_env(sub, find_keyword("OLDPWD"));
-	change_env(temp, find_keyword("PWD"));
+	str1 = ft_strjoin("OLDPWD=", sub);
+	str2 = ft_strjoin("PWD=", temp);
+	if((i = find_keyword("OLDPWD")) != -1)
+		change_env(str1, i);
+	else
+		set_new(str1);
+	if((i = find_keyword("PWD")) != -1)
+		change_env(str2, i);
+	else
+		set_new(str2);
+	free(sub);
+	free(temp);
 	return (1);
 }
 

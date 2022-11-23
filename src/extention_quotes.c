@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 14:18:13 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/19 17:01:05 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/23 19:12:00 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ char	*extend(char *var, int len, int last_ret)
 	{
 		if(var[i] == '$')
 		{
+			if(!var[i + 1])
+				return (ft_strdup("$"));
 			if(var[i + 1] == '?')
 				ext = ft_itoa(last_ret);			
 			else

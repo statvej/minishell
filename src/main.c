@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 14:53:37 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/22 15:03:33 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/23 18:32:38 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,9 @@ int main(int argc, char **argv, char **envp)
 			free_tokens(tokens);
 			continue;
 		}
+		data->input = comnd_table;
 		execution(data);
 		free_data_in_loop(data);
 	}
-
-	
 	exit(1);
 }

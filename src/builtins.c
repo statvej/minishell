@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 19:06:54 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/22 19:57:58 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/23 17:33:38 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int check_builtin(t_cmd_group *temp_cmd)
 	return -1;
 }
 
-int exec_buin(t_cmd_group *temp_cmd)
+int exec_buin(t_cmd_group *temp_cmd, t_data *data)
 {
 	if(ft_strcmp(temp_cmd->args[0], "pwd") == 0)
 		return (b_pwd());
@@ -46,6 +46,8 @@ int exec_buin(t_cmd_group *temp_cmd)
 		return (b_export(&temp_cmd->args[1]));
 	else if(ft_strcmp(temp_cmd->args[0], "cd") == 0)
 		return (b_cd(temp_cmd->args[1]));
+	else if(ft_strcmp(temp_cmd->args[0], "exit") == 0)
+		return (b_exit(temp_cmd->args, data));
 	return -1;
 }
 

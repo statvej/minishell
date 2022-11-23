@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:38:44 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/22 20:17:02 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/23 18:13:45 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void execute(t_pipe_group *pipe_grp, t_data *data)
 		if(check_builtin(temp_cmd) != -1)
 		{
 			if(pipe_grp->next || pipe_grp->prev)
-				exit(exec_buin(temp_cmd));
+				exit(exec_buin(temp_cmd, data));
 		}
 		else
 			process(temp_cmd, data->pos_paths);
@@ -128,7 +128,7 @@ void execute(t_pipe_group *pipe_grp, t_data *data)
 	{
 		if(check_builtin(temp_cmd) && !pipe_grp->next && !pipe_grp->prev)
 		{
-			data->last_log_ret = exec_buin(temp_cmd);
+			data->last_log_ret = exec_buin(temp_cmd, data);
 		}
 		if(pipe_grp->prev && pipe_grp->prev->cmd_group->pipes[0] > 2)
 			close(pipe_grp->prev->cmd_group->pipes[0]);

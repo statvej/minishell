@@ -115,6 +115,8 @@ char *get_env(char *env)
 	int i;
 	int j;
 
+	if(!env)
+		return NULL;
 	j = ft_strlen(env);
 	if((i = find_keyword(env)) != -1)
 		return(ft_substr(g_env[i], (j + 1), ft_strlen(g_env[i])));
