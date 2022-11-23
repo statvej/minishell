@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 13:14:34 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/22 18:25:33 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/23 16:22:58 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,20 @@ int check_compatability(t_str_list *str_list, char *dir_member)
     temp_link = str_list;
     while (dir_member[i] && temp_link)
     {
-        if(str_list->strict && str_list == temp_link && i)
+        if(str_list->strict == STRICT_START && str_list == temp_link && i)
             return 0;
+        if (!temp_link->next && temp_link->strict == STRICT_END)
+            if(ft_strncmp(&dir_member[ft_strlen(dir_member) - temp_link->len], temp_link->str, temp_link->len) != 0)
+                return 0;
         if(ft_strncmp(&dir_member[i], temp_link->str, temp_link->len) == 0)
         {
-            if (!temp_link->next && temp_link->strict && i + temp_link->len != (int)ft_strlen(dir_member))
-                return 0;
+            // if (!temp_link->next && temp_link->strict == STRICT_END && i + temp_link->len != (int)ft_strlen(dir_member))
+            //     return 0;
             temp_link = temp_link->next;
         }
         i++;
     }
-    if(temp_link == str_list)
+    if(temp_link && !dir_member[i])
         return 0;
     else
         return 1;
@@ -70,12 +73,7 @@ t_str_list *get_req_parts(char *str, int len)
         i++;
     }
     if(ref)
-    {
-        if(ret)
-            add_to_str_list(&ret, create_str_link(ft_strndup(ref, temp_len), temp_len, STRICT_END));
-        else
-            add_to_str_list(&ret, create_str_link(ft_strndup(ref, temp_len), temp_len, 0));
-    }
+        add_to_str_list(&ret, create_str_link(ft_strndup(ref, temp_len), temp_len, STRICT_END));
     return ret;    
 }
 
@@ -86,19 +84,16 @@ int proccess_wildcard(t_token_list *link)
     t_dirent *dir_entry;
     
     str_list = get_req_parts(link->tok, link->len);
-    link->type = WILDCARD_REMOVE;
-    dir = opendir(".");
-    print_check_str_list(str_list);   
+    dir = opendir(".");  
     dir_entry = readdir(dir);
     while (dir_entry)
     {
         if(check_compatability(str_list, dir_entry->d_name))
         {
-            printf("%s is compatable\n", dir_entry->d_name);
-            //add new token
+            link->type = WILDCARD_REMOVE;
+            insert_token_after(link, create_token(ft_strlen(dir_entry->d_name),
+                                    ft_strdup(dir_entry->d_name), EXTENDED));
         }
-        else
-            printf("%s doesnt fit\n", dir_entry->d_name);
         dir_entry = readdir(dir);
     }
     free_str_list(&str_list); 

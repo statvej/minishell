@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 15:53:45 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/22 18:18:20 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/23 14:30:52 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ void print_check_str_list(t_str_list *list)
 			printf("%c", list->str[j]);
 			j++;
 		}
-		printf("strict is %d\n", list->strict);		
+		printf("\nstrict is %d\n", list->strict);		
 		list = list->next;
 	}
 	printf("\n");

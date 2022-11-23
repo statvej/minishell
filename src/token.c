@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:57 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/19 17:40:41 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/23 16:19:54 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,23 @@ void add_token(t_token_list **first, t_token_list * to_add)
 		temp = temp->next;
 	temp->next = to_add;
 	to_add->prev = temp;
+}
+
+void insert_token_after(t_token_list *insert_ref, t_token_list *to_add)
+{
+	t_token_list *insert_next;
+
+	//save previous next
+	insert_next = insert_ref->next;
+	//add new after ref
+	insert_ref->next = to_add;
+	//link it back
+	to_add->prev = insert_ref;
+	//connect new ellem to previous next
+	to_add->next = insert_next;
+	//link it back
+	if(insert_next)
+		insert_next->prev = to_add;
 }
 
 /* VERSION 1*/

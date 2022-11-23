@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:24:25 by gpinchuk          #+#    #+#             */
-/*   Updated: 2022/11/22 18:25:07 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/23 16:13:57 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,7 @@ int parse_actions(t_log_group *log_grp, t_data *data);
 
 t_token_list	*create_token(int length, char *start, int type);
 void			add_token(t_token_list **first, t_token_list * to_add);
+void insert_token_after(t_token_list *insert_ref, t_token_list *to_add);
 t_token_list *token_delim_logic(t_token_list *global, int *len, int *needs);
 t_token_list *token_delim_pipe(t_token_list *global, int log_len, int *pipe_len);
 
