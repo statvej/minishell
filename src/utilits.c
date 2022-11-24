@@ -6,51 +6,23 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:36:32 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/16 14:34:45 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/24 19:05:34 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int get_str_arr_len(char **strarr)
+int	get_str_arr_len(char **strarr)
 {
-	int i;
+	int	i;
 
-	if(!strarr)
-		return 0;
+	if (!strarr)
+		return (0);
 	i = 0;
 	while (strarr[i] != NULL)
 		i++;
-	return i;
+	return (i);
 }
-
-void strarr_cpy(char **dst, char **src)
-{
-	if(!dst | !src)
-		return;
-	while (*dst && *src)
-	{
-		*dst = ft_strdup(*src);
-		dst++;
-		src++;
-	}
-}
-
-char ** add_elem_to_strarr(char **strarr, char *str)
-{
-	int size;
-	char **ret;
-	
-	size = get_str_arr_len(strarr);
-	ret = (char **)malloc(sizeof(char *) * (size + 2));// +2 for new elem and null
-	strarr_cpy(ret, strarr);
-	ret[size] = ft_strdup(str);
-	ret[size + 1] = NULL;
-	// free_strarr(strarr);
-	return ret;
-}
-
-
 
 char	*ft_strnnjoin(char const *s1, int n1, char const *s2, int n2)
 {
@@ -63,7 +35,7 @@ char	*ft_strnnjoin(char const *s1, int n1, char const *s2, int n2)
 			return (NULL);
 		tmp = ft_strncpy(tmp, (char *)s1, n1);
 		ft_strlcat(tmp, (char *)s2, n1 + n2 + 1);
-		return tmp;
+		return (tmp);
 	}
 	else if (s1 == NULL && s2 != NULL)
 		return (ft_strndup((char *)s2, n2));
@@ -73,40 +45,41 @@ char	*ft_strnnjoin(char const *s1, int n1, char const *s2, int n2)
 		return (NULL);
 }
 
-void strtoknjoin(t_token_list **start, int lenth)
+void	strtoknjoin(t_token_list **start, int lenth)
 {
-	int i;
-	t_token_list *temp;
-	t_token_list *temp_free;
-	t_token_list *ret;
-	char *elem;
+	int				i;
+	t_token_list	*temp;
+	t_token_list	*ret;
+	char			*elem;
+	char			*to_free;
 
 	temp = NULL;
 	elem = NULL;
-	if((*start)->prev)
+	if ((*start)->prev)
 		temp = (*start)->prev;
 	i = 0;
-
-	if(!(lenth == 0 && (*start)->len == 0))
+	if (!(lenth == 0 && (*start)->len == 0))
 	{
-		while(i <= lenth)
+		while (i <= lenth)
 		{
-			
-			elem = ft_strnnjoin(elem, (int)ft_strlen(elem), (*start)->tok, (*start)->len);
-			if((*start)->type == EXTENDED)
+			to_free = elem;
+			elem = ft_strnnjoin(elem, (int)ft_strlen(elem), \
+					(*start)->tok, (*start)->len);
+			if (to_free)
+				free(to_free);
+			if ((*start)->type == EXTENDED)
 				free((*start)->tok);
-			temp_free = *start;
+			ret = *start;
 			*start = (*start)->next;
-			if(temp_free)
-				free(temp_free);
+			if (ret)
+				free(ret);
 			i++;
 		}
 		ret = create_token(ft_strlen(elem), elem, EXTENDED);
 		if (temp)
 			temp->next = ret;
 		ret->prev = temp;
-		//because start is already start next
-		if ((*start))
+		if (*start)/*because start is already start next*/
 		{
 			ret->next = (*start);
 			ret->next->prev = ret;

@@ -1,11 +1,2 @@
-*done*  1 make function that checks lexical errors
-*done*       1 Add rule for parenthesis
-*done*  2 set env
 3 signals (do after builtins)
-4 builtind
-*done*  5 here doc *almost*
-*done*  6 $?
-7 *
-*done*  8 execution by path
-*done*  9 Free data
-*done*  10 fix leaks
+7 * fix only "*"

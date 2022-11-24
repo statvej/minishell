@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:24:25 by gpinchuk          #+#    #+#             */
-/*   Updated: 2022/11/23 18:25:25 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/24 19:45:08 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 
 # define STRICT_START 1
 # define STRICT_END 2
+# define STAR_ULTIMATE 3
 
 //TOKEN TYPES
 
@@ -67,12 +68,6 @@
 # define WILDCARD_REMOVE 19
 
 typedef struct dirent t_dirent;
-
-typedef struct s_env
-{
-	char*	val;
-	struct s_env *next; 
-}t_env;
 
 typedef struct s_int_list
 {

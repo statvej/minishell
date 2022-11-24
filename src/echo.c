@@ -6,16 +6,15 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:55:01 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/22 17:31:44 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/24 19:06:39 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../inc/minishell.h"
 
-int ft_find(char **args, int *i)
+int	ft_find(char **args, int *i)
 {
-	int n;
+	int	n;
 
 	n = 0;
 	*i = 1;
@@ -27,10 +26,10 @@ int ft_find(char **args, int *i)
 	return (n);
 }
 
-int b_echo(char **args)
+int	b_echo(char **args)
 {
-	int i;
-	int n;
+	int	i;
+	int	n;
 
 	n = 0;
 	if (!args[1])
