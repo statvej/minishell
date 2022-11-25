@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:57 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/24 19:48:43 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/25 15:22:52 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,104 +51,25 @@ void	insert_token_after(t_token_list *insert_ref, t_token_list *to_add)
 {
 	t_token_list	*insert_next;
 
-	//save previous next
 	insert_next = insert_ref->next;
-	//add new after ref
 	insert_ref->next = to_add;
-	//link it back
 	to_add->prev = insert_ref;
-	//connect new ellem to previous next
 	to_add->next = insert_next;
-	//link it back
 	if (insert_next)
 		insert_next->prev = to_add;
 }
 
-t_token_list	*token_delim_logic(t_token_list *global, int *len, int *needs)
+t_token_list	*skip_n_token(t_token_list *global, int count)
 {
-	static int		count;
-	int				i;
-	t_token_list	*ret;
+	int	i;
 
-	if (!len && !needs)
-	{
-		count = 0;
-		return (NULL);
-	}
-	if (!global)
-		return (NULL);
 	i = 0;
-	//coming to the pointed from last itteration 
-	while (global && i < count)
-	{
-		i++;
-		global = global->next;
-	}
-	if (!global)
-		return (NULL);
-	ret = global;
-	if (global->prev == NULL)
-		*needs = -1;
-	else if (global->prev->type == LOGICAL_AND)
-		*needs = 1;
-	else if (global->prev->type == LOGICAL_OR)
-		*needs = 0;
-	i = 1;
-	while (global && !is_log_group(global))
-	{
-		global = global->next;
-		i++;
-		count++;
-	}
-	//count ++ for junping over "|"
-	count++;
-	//--len for not counting "|" as we already encountered it
-	*len = --i;
-	return (ret);
-}
-
-t_token_list	*token_delim_pipe(t_token_list *global, \
-									int log_len, int *pipe_len)
-{
-	static int		count;
-	int				i;
-	t_token_list	*ret;
-
-	if (!global)
-		return (NULL);
-	i = 1;
-	//coming to the pointed from last itteration 
 	while (i < count)
 	{
 		i++;
 		global = global->next;
 	}
-	ret = global;
-	if (count >= log_len)
-	{
-		count = 0;
-		return (NULL);
-	}
-	else if (count <= 1)
-		count = 1;
-	i = 1;
-	while (global->type != PIPE)
-	{
-		global = global->next;
-		i++;
-		count++;
-		if (count >= log_len)
-		{
-			//for the end of log_group
-			*pipe_len = i;
-			return (ret);
-		}
-	}
-	//count ++ for junping over "|"
-	count++;
-	//--len for not counting "|" as we already encountered it
-	*pipe_len = --i;
-	return (ret);
+	return (global);
 }
 
 void	restore_tok_list(t_token_list **global)

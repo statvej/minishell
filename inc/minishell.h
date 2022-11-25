@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:24:25 by gpinchuk          #+#    #+#             */
-/*   Updated: 2022/11/24 19:45:08 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/25 15:22:25 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@
 # define OPENED 0
 # define CLOSED 1 
 
-# define STRICT_START 1
-# define STRICT_END 2
+# define S_START 1
+# define S_END 2
 # define STAR_ULTIMATE 3
 
 //TOKEN TYPES
@@ -166,6 +166,7 @@ void			add_token(t_token_list **first, t_token_list * to_add);
 void insert_token_after(t_token_list *insert_ref, t_token_list *to_add);
 t_token_list *token_delim_logic(t_token_list *global, int *len, int *needs);
 t_token_list *token_delim_pipe(t_token_list *global, int log_len, int *pipe_len);
+t_token_list	*skip_n_token(t_token_list *global, int count);
 
 //LOG GROUP STRUCT
 
@@ -191,6 +192,7 @@ char ** add_elem_to_strarr(char **strarr, char *str);
 void restore_tok_list(t_token_list **global);
 char	*ft_strnnjoin(char const *s1, int n1, char const *s2, int n2);
 void strtoknjoin(t_token_list **start, int lenth);
+int	check_if_str_filled_with_c(char *str, int len, char c);
 
 //Command struct
 
@@ -293,5 +295,6 @@ void free_str_list(t_str_list **list);
 //Wildcards
 
 int extend_wildcards(t_token_list *tok_list);
+t_str_list	*get_req_parts(char *str, int len);
 
 #endif
