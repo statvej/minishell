@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:36:45 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/25 16:34:10 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/25 18:23:36 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void	free_data_in_loop(t_data *data)
 		free(log_free);
 		log_free = log_temp;
 	}
-	if (data->input)
+	if (data->input && *data->input)
 		free(data->input);
 	free(data);
 }
