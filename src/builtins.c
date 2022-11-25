@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gpinchuk <gpinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 19:06:54 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/24 18:43:30 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/25 16:59:35 by gpinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	exec_buin(t_cmd_group *temp_cmd, t_data *data)
 	else if (ft_strcmp(temp_cmd->args[0], "echo") == 0)
 		return (b_echo(temp_cmd->args));
 	else if (ft_strcmp(temp_cmd->args[0], "export") == 0)
-		return (b_export(&temp_cmd->args[1]));
+		return (b_export(temp_cmd->args));
 	else if (ft_strcmp(temp_cmd->args[0], "cd") == 0)
 		return (b_cd(temp_cmd->args[1]));
 	else if (ft_strcmp(temp_cmd->args[0], "exit") == 0)

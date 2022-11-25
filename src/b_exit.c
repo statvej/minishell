@@ -12,21 +12,10 @@
 
 #include "../inc/minishell.h"
 
-int	b_exit(char **av, t_data *data)
+int	exit_error(int ac, char **av, int exit_status)
 {
-	int	ac;
 	int	i;
-	int	exit_status;
 
-	ac = get_str_arr_len(av);
-	exit_status = 1;
-	if (ac > 2)
-	{
-		ft_putstr_fd("exit\nminishell: exit: too many arguments\n", 2);
-		return (1);
-	}
-	else if (ac == 1)
-		exit_status = 0;
 	i = 0;
 	while (ac == 2 && av[1][i])
 	{
@@ -40,6 +29,24 @@ int	b_exit(char **av, t_data *data)
 		}
 		i++;
 	}
+	return (exit_status);
+}
+
+int	b_exit(char **av, t_data *data)
+{
+	int	ac;
+	int	exit_status;
+
+	ac = get_str_arr_len(av);
+	exit_status = 1;
+	if (ac > 2)
+	{
+		ft_putstr_fd("exit\nminishell: exit: too many arguments\n", 2);
+		return (1);
+	}
+	else if (ac == 1)
+		exit_status = 0;
+	exit_status = exit_error(ac, av, exit_status);
 	if (exit_status)
 		exit_status = ft_atoi(av[1]);
 	free_strarr(g_env);

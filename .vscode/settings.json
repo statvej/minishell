@@ -8,6 +8,8 @@
         "string": "c",
         "string_view": "c",
         "unordered_map": "c",
-        "complex": "c"
+        "complex": "c",
+        "sstream": "c",
+        "minishell.h": "c"
     }
 }

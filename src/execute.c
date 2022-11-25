@@ -3,64 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gpinchuk <gpinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:38:44 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/24 19:58:18 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/25 18:22:47 by gpinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-char	**find_path(void)
-{
-	int		i;
-	char	**path;
-
-	i = 0;
-	while (ft_strncmp("PATH", g_env[i], 4))
-		i++;
-	path = ft_split(g_env[i] + 5, ':');
-	return (path);
-}
-
-char	*find_command(char **path, char *command)
-{
-	int		i;
-	char	*result;
-	char	*temp;
-	char	*pwd;
-
-	i = 0;
-	//for absolute path
-	if (!access(command, F_OK))
-		return (command);
-	//for relative path
-	pwd = extend("PWD", 3, 0);
-	result = ft_strjoin(pwd, command);
-	if (!access(result, F_OK))
-	{
-		free(pwd);
-		return (result);
-	}
-	free(pwd);
-	free(result);
-	//for path in /bin and similar
-	while (path[i])
-	{
-		temp = ft_strjoin(path[i], "/");
-		result = ft_strjoin(temp, command);
-		if (!access(result, F_OK))
-		{
-			free(temp);
-			return (result);
-		}
-		free(temp);
-		free(result);
-		i++;
-	}
-	return (0);
-}
 
 void	process(t_cmd_group *cmd_grp, char **pp)
 {
@@ -90,53 +40,23 @@ int	create_pipes(t_log_group *log_grp)
 	return (1);
 }
 
-void	execute(t_pipe_group *pipe_grp, t_data *data)
+void	redirect_pipes(t_cmd_group	*temp_cmd, t_pipe_group *pipe_grp)
 {
-	t_cmd_group	*temp_cmd;
-	int			status;
-
-	temp_cmd = pipe_grp->cmd_group;
-	temp_cmd->child = fork();
-	if (temp_cmd->child == 0)
+	if (pipe_grp->next)
+		if ((dup2(temp_cmd->pipes[1], STDOUT_FILENO)) == -1)
+			perror("ERR_OUTFILE");
+	if (pipe_grp->prev)
+		if ((dup2(pipe_grp->prev->cmd_group->pipes[0], STDIN_FILENO)) == -1)
+			perror("ERR_OUTFILE");
+	while (temp_cmd->in)
 	{
-		if (pipe_grp->next)
-			if ((dup2(temp_cmd->pipes[1], STDOUT_FILENO)) == -1)
-				perror("ERR_OUTFILE");
-		if (pipe_grp->prev)
-			if ((dup2(pipe_grp->prev->cmd_group->pipes[0], STDIN_FILENO)) == -1)
-				perror("ERR_OUTFILE");
-		while (temp_cmd->in)
-		{
-			dup2(temp_cmd->in->val, STDIN_FILENO);
-			temp_cmd->in = temp_cmd->in->next;
-		}
-		while (temp_cmd->out)
-		{
-			dup2(temp_cmd->out->val, STDOUT_FILENO);
-			temp_cmd->out = temp_cmd->out->next;
-		}
-		if (check_builtin(temp_cmd) != -1)
-		{
-			if (pipe_grp->next || pipe_grp->prev)
-				exit(exec_buin(temp_cmd, data));
-		}
-		else
-			process(temp_cmd, data->pos_paths);
-		exit(0);
+		dup2(temp_cmd->in->val, STDIN_FILENO);
+		temp_cmd->in = temp_cmd->in->next;
 	}
-	else
+	while (temp_cmd->out)
 	{
-		if (check_builtin(temp_cmd) && !pipe_grp->next && !pipe_grp->prev)
-		{
-			data->last_log_ret = exec_buin(temp_cmd, data);
-		}
-		if (pipe_grp->prev && pipe_grp->prev->cmd_group->pipes[0] > 2)
-			close(pipe_grp->prev->cmd_group->pipes[0]);
-		if (temp_cmd->pipes[1] > 2)
-			close(temp_cmd->pipes[1]);
-		waitpid(temp_cmd->child, &status, 0);
-		if (!check_builtin(temp_cmd))
-			data->last_log_ret = status;
+		dup2(temp_cmd->out->val, STDOUT_FILENO);
+		temp_cmd->out = temp_cmd->out->next;
 	}
 }
 
@@ -150,48 +70,6 @@ void	close_pipes(t_pipe_group *pipe_grp)
 			close(pipe_grp->cmd_group->pipes[0]);
 		pipe_grp = pipe_grp->next;
 	}
-}
-
-t_log_group	*execute_log(t_data *data, t_log_group *log_grp, int cur_level)
-{
-	t_log_group		*log_temp;
-	t_pipe_group	*pipe_temp;
-
-	log_temp = log_grp;
-	while (log_temp)
-	{
-		if (log_temp->rec_depth > cur_level)
-		{
-			log_temp = execute_log(data, log_temp, cur_level + 1);
-			if (!log_temp)
-				return (NULL);
-		}
-		if (log_temp->needs == -1 || \
-			(data->last_log_ret != 256 && log_temp->needs == 1)
-			|| (data->last_log_ret == 256 && log_temp->needs == 0))
-		{
-			pipe_temp = log_temp->pipe_group;
-			if (!create_pipes(log_temp))
-			{
-				perror("Bro, why do you need so many pipes???\n");
-				close_pipes(pipe_temp);
-				return (NULL);
-			}
-			while (pipe_temp)
-			{
-				execute(pipe_temp, data);
-				pipe_temp = pipe_temp->next;
-			}
-		}
-		else if (log_temp->rec_depth != 0)
-			return (NULL);
-		if (log_temp->next && log_temp->next->rec_depth < cur_level)
-		{
-			return (log_temp->next);
-		}
-		log_temp = log_temp->next;
-	}
-	return (NULL);
 }
 
 int	execution(t_data *data)
