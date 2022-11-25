@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:36:45 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/24 19:06:11 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/25 18:23:36 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ void	free_strarr(char **strarr)
 	free(strarr);
 }
 
-void	free_tokens(t_token_list *tok)
+t_token_list	*free_tokens(t_token_list *tok)
 {
 	t_token_list	*temp;
 
 	if (!tok)
-		return ;
+		return (NULL);
 	temp = tok;
 	while (tok)
 	{
@@ -43,6 +43,7 @@ void	free_tokens(t_token_list *tok)
 			free(temp->tok);
 		temp = tok;
 	}
+	return (NULL);
 }
 
 void	free_int_list(t_int_list *list)
@@ -107,7 +108,7 @@ void	free_data_in_loop(t_data *data)
 		free(log_free);
 		log_free = log_temp;
 	}
-	if (data->input)
+	if (data->input && *data->input)
 		free(data->input);
 	free(data);
 }

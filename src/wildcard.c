@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 13:14:34 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/24 19:00:27 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/25 14:46:17 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ int	check_compatability(t_str_list *str_list, char *dir_member)
 		return (1);
 	while (dir_member[i] && temp_link)
 	{
-		if (str_list->strict == STRICT_START && str_list == temp_link && i)
+		if (str_list->strict == S_START && str_list == temp_link && i)
 			return (0);
-		if (!temp_link->next && temp_link->strict == STRICT_END)
+		if (!temp_link->next && temp_link->strict == S_END)
 			if (ft_strncmp(&dir_member[ft_strlen(dir_member) - temp_link->len], \
 					temp_link->str, temp_link->len) != 0)
 				return (0);
@@ -37,47 +37,6 @@ int	check_compatability(t_str_list *str_list, char *dir_member)
 		return (0);
 	else
 		return (1);
-}
-
-t_str_list	*get_req_parts(char *str, int len)
-{
-	int			i;
-	int			temp_len;
-	char		*ref;
-	t_str_list	*ret;
-	int			first;
-
-	ref = NULL;
-	i = 0;
-	temp_len = 0;
-	ret = NULL;
-	first = STRICT_START;
-	while (str[i] && i < len)
-	{
-		if (!ref && str[i] != '*')
-		{
-			ref = &str[i];
-			temp_len++;
-		}
-		else if (ref && str[i] == '*')
-		{
-			add_to_str_list(&ret, \
-				create_str_link(ft_strndup(ref, temp_len), temp_len, first));
-			temp_len = 0;
-			ref = NULL;
-		}
-		else if (ref && str[i] != '*')
-			temp_len++;
-		if (str[i] == '*')
-			first = 0;
-		i++;
-	}
-	if (ref)
-		add_to_str_list(&ret, create_str_link(ft_strndup(ref, temp_len), \
-													temp_len, STRICT_END));
-	else if (str[i - 1] == '*')
-		return (create_str_link(NULL, 0, STAR_ULTIMATE));
-	return (ret);
 }
 
 int	proccess_wildcard(t_token_list *link)

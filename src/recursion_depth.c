@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 17:54:03 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/24 19:11:16 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/25 15:49:22 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	get_max_depth(t_token_list *tok_list)
 			closings++;
 		tok_list = tok_list->next;
 	}
-	//parenthesis not closed
 	if (openings - closings != 0)
 		return (-1);
 	return (openings);
@@ -55,7 +54,6 @@ void	get_prnth_count(t_token_list *tok_list, int len, int *op, int *cl)
 	*cl = closings;
 }
 
-//here depth is kinda reversed for purpose of using less variables
 int	set_recursion_depth(t_log_group *log_grp)
 {
 	int	max_depth;
