@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gpinchuk <gpinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 19:20:25 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/24 19:37:40 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/25 15:05:00 by gpinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,26 +68,6 @@ char	**create_env(char **env)
 	return (new_env);
 }
 
-int	size_of_env(void)
-{
-	int	i;
-
-	i = 0;
-	while (g_env[i])
-		i++;
-	return (i);
-}
-
-int	find_index_of_char(char *env, char c)
-{
-	char	*ch;
-
-	ch = ft_strchr(env, c);
-	if (!ch)
-		return (-1);
-	return ((size_t)(ch - env));
-}
-
 int	find_keyword(char *keyword)
 {
 	int		i;
@@ -115,21 +95,6 @@ int	find_keyword(char *keyword)
 		i++;
 	}
 	return (-1);
-}
-
-char	*get_env(char *env)
-{
-	int	i;
-	int	j;
-
-	if (!env)
-		return (NULL);
-	j = ft_strlen(env);
-	i = find_keyword(env);
-	if (i != -1)
-		return (ft_substr(g_env[i], (j + 1), ft_strlen(g_env[i])));
-	else
-		return (NULL);
 }
 
 char	**realloc_env(size_t size)

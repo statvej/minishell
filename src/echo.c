@@ -3,27 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gpinchuk <gpinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:55:01 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/24 19:06:39 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/25 17:35:54 by gpinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	ft_find(char **args, int *i)
+void	ft_find(char **args, int *i)
 {
-	int	n;
+	int	j;
 
-	n = 0;
 	*i = 1;
-	if (args[1][0] == '-' && args[1][1] == 'n' && !args[1][2])
+	while (args[*i])
 	{
-		n++;
-		*i = 2;
+		j = 0;
+		if (args[*i][j++] == '-' && args[*i][j] && args[*i][j] == 'n')
+		{
+			while (args[*i][j] == 'n')
+			{
+				j++;
+				if (args[*i][j] == '-' && args[*i][j] != 'n')
+				{
+					*i = 1;
+					return ;
+				}
+			}	
+		}
+		else
+			return ;
+		(*i)++;
 	}
-	return (n);
+	return ;
+}
+
+void	echo_putstr_fd(char *arg, int fd)
+{
+	int	i;
+
+	i = 0;
+	while (arg[i])
+	{
+		if (arg[i] == '\\')
+			i++;
+		write(fd, &arg[i], 1);
+		i++;
+	}
 }
 
 int	b_echo(char **args)
@@ -39,10 +66,12 @@ int	b_echo(char **args)
 	}
 	if (args[1][0] == '-' && args[1][1] == 'n' && !args[1][2] && !args[2])
 		return (0);
-	n = ft_find(args, &i);
+	ft_find(args, &i);
+	if (i > 1)
+		n = 1;
 	while (args[i])
 	{
-		ft_putstr_fd(args[i], 1);
+		echo_putstr_fd(args[i], 1);
 		i++;
 		if (args[i])
 			write(1, " ", 1);

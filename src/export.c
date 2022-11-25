@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gpinchuk <gpinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:54:55 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/24 19:24:47 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/25 17:00:05 by gpinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,13 +90,13 @@ int	b_export(char **args)
 {
 	int	i;
 
-	if (!args[0])
+	if (!args[1])
 	{
 		print_export();
 		return (1);
 	}
 	i = 0;
-	while (args[i])
+	while (args[++i])
 	{
 		if (check_keyword(args[i]))
 		{
@@ -106,7 +106,6 @@ int	b_export(char **args)
 			return (1);
 		}
 		add_env(args[i]);
-		i++;
 	}
 	return (0);
 }

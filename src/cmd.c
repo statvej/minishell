@@ -3,14 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gpinchuk <gpinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 17:33:45 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/24 19:03:05 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/25 15:00:19 by gpinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+int	sub_open_redir(t_token_list *temp, t_pipe_group *pipe)
+{
+	int	fd;
+
+	if (temp->next && (temp->next->type == TEXT || \
+		temp->next->type == EXTENDED))
+	{
+		fd = redirect(temp->type, temp->next->tok, \
+		temp->next->len, &pipe->cmd_group);
+		temp->next->type = REDIRECTIONS;
+		if (fd < 0)
+			return (-1);
+	}
+	else if (temp->next && temp->next->next && \
+		(temp->next->next->type == TEXT || \
+		temp->next->next->type == EXTENDED))
+	{
+		fd = redirect(temp->type, temp->next->next->tok, \
+		temp->next->next->len, &pipe->cmd_group);
+		temp->next->next->type = REDIRECTIONS;
+		if (fd < 0)
+			return (-1);
+	}
+	return (1);
+}
 
 int	open_redir(t_pipe_group *pipe)
 {
@@ -26,26 +52,8 @@ int	open_redir(t_pipe_group *pipe)
 		if (temp->type == INPUT || temp->type == OUTPUT_APPEND \
 			|| temp->type == OUTPUT_OVER || temp->type == HERE_DOC)
 		{
-			if (temp->next && (temp->next->type == TEXT || \
-				temp->next->type == EXTENDED))
-			{
-				fd = redirect(temp->type, temp->next->tok, \
-				temp->next->len, &pipe->cmd_group);
-				temp->next->type = REDIRECTIONS;
-				if (fd < 0)
-					return (-1);
-			}
-			else if (temp->next && temp->next->next && \
-				(temp->next->next->type == TEXT || \
-				temp->next->next->type == EXTENDED))
-			{
-				fd = redirect(temp->type, temp->next->next->tok, \
-				temp->next->next->len, &pipe->cmd_group);
-				temp->next->next->type = REDIRECTIONS;
-				if (fd < 0)
-					return (-1);
-			}
-			else
+			fd = sub_open_redir(temp, pipe);
+			if (fd == -1)
 			{
 				perror("ERROR WITH REDIRECTIONSSSSSS");
 				return (-1);
@@ -55,44 +63,6 @@ int	open_redir(t_pipe_group *pipe)
 		temp = temp->next;
 	}
 	return (1);
-}
-
-int	redirect(int type, char *file, int len, t_cmd_group **cmds)
-{
-	int		fd;
-	char	*str;
-
-	fd = -1;
-	str = ft_strndup(file, len);
-	if (type == INPUT)
-	{
-		fd = open(str, O_RDONLY);
-		add_to_int_list(&(*cmds)->in, create_int_link(fd));
-	}
-	else if (type == OUTPUT_OVER)
-	{
-		fd = open(str, O_TRUNC | O_RDWR | O_CREAT, 0777);
-		add_to_int_list(&(*cmds)->out, create_int_link(fd));
-	}
-	else if (type == OUTPUT_APPEND)
-	{
-		fd = open(str, O_APPEND | O_RDWR | O_CREAT, 0777);
-		add_to_int_list(&(*cmds)->out, create_int_link(fd));
-	}
-	else if (type == HERE_DOC)
-	{
-		fd = open(".here_doc.tmp", O_WRONLY | O_CREAT, 0777);
-		if ((*cmds)->limit)
-			free((*cmds)->limit);
-		(*cmds)->limit = ft_strndup(str, len);
-		fill_here_doc(fd, (*cmds)->limit);
-		fd = open(".here_doc.tmp", O_RDONLY);
-		add_to_int_list(&(*cmds)->in, create_int_link(fd));
-	}
-	if (fd < 0)
-		perror("ERROR WITH REDIRECTIONS");
-	free(str);
-	return (fd);
 }
 
 int	count_args(t_token_list *list, int list_len)

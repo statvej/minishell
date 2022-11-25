@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gpinchuk <gpinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:24:25 by gpinchuk          #+#    #+#             */
-/*   Updated: 2022/11/24 19:45:08 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/25 18:25:33 by gpinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,6 +235,13 @@ int	check_lexical_errors(t_token_list *list);
 //execution
 
 int execution(t_data *data);
+char	**find_path(void);
+void	process(t_cmd_group *cmd_grp, char **pp);
+int	create_pipes(t_log_group *log_grp);
+void	close_pipes(t_pipe_group *pipe_grp);
+char	*find_command(char **path, char *command);
+t_log_group	*execute_log(t_data *data, t_log_group *log_grp, int cur_level);
+void	redirect_pipes(t_cmd_group	*temp_cmd, t_pipe_group *pipe_grp);
 
 //Signals
 
