@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:42:39 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/24 19:22:24 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/25 16:05:53 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,43 +78,6 @@ int	check_redir_dest(t_token_list *list)
 		list = list->next;
 	}
 	return (1);
-}
-
-int	check_prnth_location(t_token_list *list)
-{
-	int	log_grp_in_power;
-	int	on_the_prnth;
-	int	prnth_valid;
-
-	on_the_prnth = 0;
-	//because we can have prnth at the begining
-	if (is_prnth(list) || (list->type == SPACE && list->next && \
-											is_prnth(list->next)))
-		log_grp_in_power = 1;
-	prnth_valid = 0;
-	while (list)
-	{
-		if (is_prnth(list))
-			on_the_prnth = 1;
-		if (is_log_group(list))
-			log_grp_in_power = 1;
-		if (log_grp_in_power && on_the_prnth)
-			prnth_valid = 1;
-		if (on_the_prnth && !is_prnth(list) && list->type != SPACE && \
-														!is_log_group(list))
-		{
-			if (prnth_valid)
-			{
-				prnth_valid = 0;
-				on_the_prnth = 0;
-				log_grp_in_power = 0;
-			}
-			else
-				return (-1);
-		}	
-		list = list->next;
-	}
-	return (0);
 }
 
 int	check_lexical_errors(t_token_list *list)

@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:24:25 by gpinchuk          #+#    #+#             */
-/*   Updated: 2022/11/25 15:22:25 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/25 16:44:04 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,11 @@ char	*read_input(void);
 //LEXER
 
 t_token_list *lexer(char *input);
+void	init_separs(char **separs);
+void   init_index(int *index);
+int	get_type(char input);
+int	add_quot_tok(t_token_list **token, char *input, char **start, int *type);
+void	add_common_tok(t_token_list **token, char *in, char **start, int *type);
 
 //Parse
 
@@ -182,7 +187,7 @@ void create_pipe_group(t_log_group *log_grp);
 //Destroy
 
 void    free_strarr(char **strarr);
-void free_tokens(t_token_list *tok);
+t_token_list *free_tokens(t_token_list *tok);
 
 //Utils 
 
@@ -233,6 +238,7 @@ void open_quotes(t_token_list **tok_list, int *tok_lenth);
 //lexical errors
 
 int	check_lexical_errors(t_token_list *list);
+int	check_prnth_location(t_token_list *l);
 
 //execution
 
