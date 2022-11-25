@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 16:54:10 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/25 16:54:27 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/25 17:53:04 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*sub_extend(char *var, int len)
 		}
 		i++;
 	}
-	return (NULL);
+	return (ft_strndup(var - 1, var_len + 1));
 }
 
 char	*extend(char *var, int len, int last_ret)

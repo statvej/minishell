@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:35:57 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/25 15:22:52 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/25 17:55:34 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ t_token_list	*skip_n_token(t_token_list *global, int count)
 	int	i;
 
 	i = 0;
-	while (i < count)
+	while (i < count && global)
 	{
 		i++;
 		global = global->next;
