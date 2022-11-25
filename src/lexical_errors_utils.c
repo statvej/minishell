@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 16:05:15 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/25 16:05:26 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/25 17:41:32 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void	cancel_prnth_loc(int *l, int *o, int *p)
 void	prnth_loc_if_state(t_token_list *l, int *on_the_prnth, \
 	int *log_in_power, int *prnth_valid)
 {
+	if (!is_prnth(l) && l->type != SPACE)
+		*log_in_power = 0;
 	if (is_prnth(l))
 		*on_the_prnth = 1;
 	if (is_log_group(l))
