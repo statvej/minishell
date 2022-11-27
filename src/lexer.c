@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 13:50:03 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/25 16:43:52 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/26 17:17:56 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	sub_lexer_quotes(int *type, char *input_i, \
 		if (ret == -1)
 		{
 			free_tokens(*tokens);
-			return (0);
+			return (-1);
 		}
 	}
 	return (ret);
@@ -104,6 +104,7 @@ t_token_list	*lexer(char *input)
 	int				type;
 	char			*start;
 	t_token_list	*tokens;
+	int				temp;
 
 	if (!input)
 		return (NULL);
@@ -114,7 +115,10 @@ t_token_list	*lexer(char *input)
 	while (input[i])
 	{	
 		sub_lexer(&type, &input[i], &start, &tokens);
-		i += sub_lexer_quotes(&type, &input[i], &start, &tokens) + 1;
+		temp = sub_lexer_quotes(&type, &input[i], &start, &tokens);
+		if (temp == -1)
+			return (NULL);
+		i += temp + 1;
 	}
 	add_token(&tokens, create_token((int)(&input[i] - start), start, type));
 	if (extend_token_types(&tokens) == -1)

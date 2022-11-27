@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpinchuk <gpinchuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 19:06:54 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/25 16:59:35 by gpinchuk         ###   ########.fr       */
+/*   Updated: 2022/11/26 20:06:02 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	check_builtin(t_cmd_group *temp_cmd)
 		return (6);
 	else if (ft_strcmp(temp_cmd->args[0], "exit") == 0)
 		return (7);
-	return (-1);
+	return (0);
 }
 
 int	exec_buin(t_cmd_group *temp_cmd, t_data *data)

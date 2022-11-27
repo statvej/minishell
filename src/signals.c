@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/27 11:34:37 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/25 18:40:40 by fstaryk          ###   ########.fr       */
+/*   Created: 2022/11/26 14:05:36 by gpinchuk          #+#    #+#             */
+/*   Updated: 2022/11/26 15:56:09 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../inc/minishell.h"
 
-size_t	ft_strlen(const char *str)
+void	signals(void)
 {
-	int	i;
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, sig_handle);
+}
 
-	i = 0;
-	if (!str)
-		return (0);
-	while (*str)
-	{
-		str++;
-		i++;
-	}
-	return (i);
+void	child_sig(void)
+{
+	signal(SIGQUIT, sig_handle_child);
+	signal(SIGINT, sig_handle_child);
+}
+
+void	heredoc_sig(void)
+{
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, heredoc_sig_handle);
 }

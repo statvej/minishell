@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/27 14:45:04 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/08 13:01:34 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/25 18:40:07 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*tmp;
-	char 	*test;
+	char	*test;
 
 	if (s1 && s2)
 	{

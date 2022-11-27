@@ -1,43 +1,32 @@
 NAME = minishell
+LIB_F = libft
 LIB = libft.a
 SRC = src
-INC = inc	
-LIB_F = libft
 OBJ = obj
-CC := gcc
-CFLAGS := -Wall -Wextra -Werror -g -I$(INC) 
-SRC_F = $(wildcard $(SRC)/*.c)
-OBJ_F = $(SRC_F:.c=.o)
-OBJS = $(subst $(SRC),$(OBJ),$(OBJ_F))
-
-GREEN = \033[0;92m
-YELLOW = \033[0;93m
-BLUE = \033[0;34m
-DEF_COLOR = \033[0;39m
-
-.PHONY: all clean fclean re
+INC = inc
+CFLAGS = -Wall -Wextra -Werror -g -I$(INC)
+RM = rm -rf
+CC = gcc
+SRCS = src/b_exit.c src/builtins.c src/cd.c src/checkers.c src/cmd.c src/destroy.c src/echo.c src/env.c src/env_builtins.c src/env_utils.c src/execute.c src/execute_log.c src/execute_utils.c src/export.c src/export_print.c src/here_doc.c src/int_list.c src/lexer.c src/lexer_utils.c src/lexical_errors.c src/lexical_errors_utils.c src/log_group.c src/main.c src/open_extentions.c src/open_quotes.c src/parse.c src/parse_actions.c src/pipe_group.c src/print_check.c src/read_input.c src/recursion_depth.c src/redirect.c src/sig_handle.c src/signals.c src/str_list.c src/token.c src/token_delim_logic.c src/token_delim_pipe.c src/utilits.c src/wildcard.c src/wildcard_utils.c
+OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIB_F)/$(LIB)
-	@$(CC)  -lreadline  $^ -o $(NAME)
-	@echo "$(GREEN)minishell compiled!$(DEF_COLOR)"
+	@$(CC) $(CFLAGS) $(OBJS) $(LIB_F)/$(LIB) -o $(NAME) -lreadline
 
-$(OBJ)/%.o:	$(SRC)/%.c $(OBJ)
-	@echo "$(YELLOW)Compiling: $< $(DEF_COLOR)"
-	$(CC) $(CFLAGS) -c $< -o $@ 
-
-$(OBJ): 
-	@mkdir -p $(OBJ)
+$(LIB_F)/$(LIB):
 	@make -C $(LIB_F)
-	@echo "$(BLUE)libft is done!$(DEF_COLOR)"
+	@echo "libft is done!"
 
 clean:
-	@rm -rf $(OBJ)
+	@$(RM) $(OBJS)
+	rm -rf obj 
+	@echo "successfuly cleaned"
 
 fclean: clean
-	@rm -rf $(NAME)
+	@$(RM) $(NAME)
 	@make fclean -C $(LIB_F)
-	@echo "$(YELLOW)Evrything was cleaned $(DEF_COLOR)"
+	@echo "executable removed successfuly"
 
 re: fclean all

@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 14:46:30 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/24 18:57:14 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/26 16:01:07 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int	is_log_group(t_token_list *list)
 
 int	is_prnth(t_token_list *list)
 {
+	if (!list)
+		return (0);
 	if (list->type == PRNTH_RIGHT || list->type == PRNTH_LEFT)
 		return (1);
 	else

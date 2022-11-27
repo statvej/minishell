@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:42:39 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/25 16:05:53 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/26 15:38:16 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	check_tok_content(t_token_list *list)
 		if ((list->type == OUTPUT_OVER || list->type == INPUT) && \
 														list->len != 1)
 			return (-1);
-		if (is_prnth(list) && is_prnth(list->next))
+		if (is_prnth(list) && list->next && is_prnth(list->next))
 			if (list->type != list->next->type)
 				return (-1);
 		list = list->next;

@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 16:54:10 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/25 17:53:04 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/26 20:27:26 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,18 @@ char	*sub_extend(char *var, int len)
 		}
 		i++;
 	}
-	return (ft_strndup(var - 1, var_len + 1));
+	return (NULL);
 }
 
 char	*extend(char *var, int len, int last_ret)
 {
 	char	*ext;
 	char	*ret;
-	char	*to_free;
 	int		i;
 
 	i = 0;
 	ret = NULL;
+	// fprintf(stderr, "\n\n\n\nlst ret is %d\n", last_ret);
 	while (i < len)
 	{
 		if (var[i] == '$')
@@ -57,9 +57,7 @@ char	*extend(char *var, int len, int last_ret)
 				ext = ft_itoa(last_ret);
 			else
 				ext = sub_extend(&var[i + 1], len - i - 1);
-			to_free = ret;
 			ret = ft_strnnjoin(ret, ft_strlen(ret), ext, ft_strlen(ext));
-			free(to_free);
 			free(ext);
 		}
 		i++;
@@ -105,4 +103,5 @@ void	open_extentions(t_token_list **tok_list, int tok_len, int last_ret)
 		count++;
 		temp = temp->next;
 	}
+	// print_ntoken(*tok_list, tok_len, "\t");
 }

@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/25 18:36:00 by fstaryk           #+#    #+#             */
+/*   Updated: 2022/11/26 19:58:59 by fstaryk          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -197,7 +208,6 @@ void					print_token(t_token_list *token);
 void					print_cmd(t_cmd_group *cmd_grp);
 void					printBits(size_t const size, void const *const ptr);
 void					print_check_str_list(t_str_list *list);
-
 void					restore_tok_list(t_token_list **global);
 
 //INT LISTS
@@ -226,7 +236,16 @@ int						check_prnth_location(t_token_list *l);
 
 //execution
 
-
+int						execution(t_data *data);
+char					**find_path(void);
+void					process(t_cmd_group *cmd_grp, char **pp);
+int						create_pipes(t_log_group *log_grp);
+void					close_pipes(t_pipe_group *pipe_grp);
+char					*find_command(char **path, char *command);
+t_log_group				*execute_log(t_data *data, t_log_group *log_grp, \
+															int cur_level);
+void					redirect_pipes(t_cmd_group *temp_cmd, \
+												t_pipe_group *pipe_grp);
 
 //Signals
 
@@ -286,5 +305,13 @@ void					free_str_list(t_str_list **list);
 
 int						extend_wildcards(t_token_list *tok_list);
 t_str_list				*get_req_parts(char *str, int len);
+
+//Signals
+void					signals(void);
+void					child_sig(void);
+void					heredoc_sig(void);
+void					heredoc_sig_handle(int sig);
+void					sig_handle(int sig);
+void					sig_handle_child(int sig);
 
 #endif

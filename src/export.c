@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpinchuk <gpinchuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:54:55 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/25 17:00:05 by gpinchuk         ###   ########.fr       */
+/*   Updated: 2022/11/26 18:29:38 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,7 @@ int	check_keyword(char *args)
 
 void	change_env(char *arg, int index)
 {
-	free(g_env[index]);
 	g_env[index] = ft_strdup(arg);
-	free(arg);
 }
 
 void	set_new(char *arg)

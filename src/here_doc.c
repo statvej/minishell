@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:15:33 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/24 19:32:00 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/26 16:06:01 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	exists(const char *fname)
 	return (0);
 }
 
-void	fill_here_doc(int fd, char *limit)
+void	sub_fill_heredoc(int fd, char *limit)
 {
 	char	*line;
 	char	*ret1;
@@ -35,6 +35,7 @@ void	fill_here_doc(int fd, char *limit)
 	ret2 = NULL;
 	while (1)
 	{
+		heredoc_sig();
 		line = readline("here_doc> ");
 		if (ft_strcmp(line, limit) == 0)
 		{
@@ -42,7 +43,7 @@ void	fill_here_doc(int fd, char *limit)
 			free(ret1);
 			free(line);
 			close(fd);
-			return ;
+			exit(1);
 		}
 		ret2 = ft_strjoin(ret1, line);
 		free(ret1);
@@ -50,4 +51,18 @@ void	fill_here_doc(int fd, char *limit)
 		free(ret2);
 		free(line);
 	}
+}
+
+void	fill_here_doc(int fd, char *limit)
+{
+	int		pid;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		sub_fill_heredoc(fd, limit);
+	}
+	else
+		waitpid(pid, NULL, 0);
+	signals();
 }

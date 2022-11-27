@@ -6,7 +6,7 @@
 /*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 16:31:59 by statvej           #+#    #+#             */
-/*   Updated: 2022/11/23 18:07:16 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/11/25 18:40:56 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_strncmp(const char *s1, const char *s2, unsigned long n)
 {
-	if(!s1 || !s2)
+	if (!s1 || !s2)
 		return (-1);
 	while (n-- && (*(unsigned char *)s1 || *(unsigned char *)s2))
 	{

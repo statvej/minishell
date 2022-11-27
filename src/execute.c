@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpinchuk <gpinchuk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:38:44 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/25 18:22:47 by gpinchuk         ###   ########.fr       */
+/*   Updated: 2022/11/26 19:31:50 by fstaryk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	process(t_cmd_group *cmd_grp, char **pp)
 	if (!cmd_grp->command)
 	{
 		perror("command doesn't exist");
+		exit(1);
 	}
 	else
 		execve(cmd_grp->command, cmd_grp->args, g_env);
