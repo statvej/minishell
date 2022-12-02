@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yarutiun <yarutiun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 13:50:03 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/26 17:17:56 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/12/02 11:25:47 by yarutiun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,12 @@ int	sub_extend_token_types(char **separs, int *index, t_token_list *temp)
 
 int	extend_token_types(t_token_list **token)
 {
-	int				i;
 	t_token_list	*temp;
 	char			*separs[9];
 	int				index[9];
 
 	init_separs(separs);
 	init_index(index);
-	i = 0;
 	temp = *token;
 	while (temp)
 	{

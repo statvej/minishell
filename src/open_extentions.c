@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_extentions.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yarutiun <yarutiun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 16:54:10 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/26 20:27:26 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/12/02 11:26:07 by yarutiun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,10 @@
 char	*sub_extend(char *var, int len)
 {
 	int		i;
-	char	*ret;
 	int		var_len;
 
 	i = 0;
 	var_len = 0;
-	ret = NULL;
 	while (var_len < len)
 	{
 		if (var[var_len] == '$')

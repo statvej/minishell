@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yarutiun <yarutiun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:38:44 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/26 19:31:50 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/12/02 11:25:30 by yarutiun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,6 @@ void	close_pipes(t_pipe_group *pipe_grp)
 
 int	execution(t_data *data)
 {
-	int	prev_depth;
-
-	prev_depth = 0;
 	data->pos_paths = find_path();
 	execute_log(data, data->log_grp, 0);
 	return (1);
