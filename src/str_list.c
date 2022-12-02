@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   str_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yarutiun <yarutiun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 13:53:49 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/24 19:09:57 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/12/02 11:27:38 by yarutiun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,9 @@ void	add_to_str_list(t_str_list **list, t_str_list *to_add)
 void	free_str_list(t_str_list **list)
 {
 	t_str_list	*temp;
-	t_str_list	*start;
 
 	if (!list)
 		return ;
-	start = (*list);
 	while ((*list))
 	{
 		temp = (*list);
@@ -58,5 +56,4 @@ void	free_str_list(t_str_list **list)
 		free(temp);
 		*list = (*list)->next;
 	}
-	start = NULL;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_check.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstaryk <fstaryk@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yarutiun <yarutiun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 15:53:45 by fstaryk           #+#    #+#             */
-/*   Updated: 2022/11/26 20:11:45 by fstaryk          ###   ########.fr       */
+/*   Updated: 2022/12/02 11:27:07 by yarutiun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,10 @@ void mx_print_strarr(char **arr, const char *delim){
 	if(!arr || !delim){
 		return;
 	}
-	int exist = 0;
 	int i = 0;
 
 	for(; arr[i]; i++){
 		fprintf(stderr, "%s%s", arr[i], delim);
-		exist = 1;
 	}
 }
 
@@ -91,16 +89,9 @@ void print_pipe_group(t_pipe_group *pipe_grp)
 
 void print_logic_grp(t_log_group *log_grp)
 {
-	int i;
-	int j;
-
-	i = 0;
-	j = 0;
 	while (log_grp)
 	{
-		i = 0;
 		fprintf(stderr, "tokens in group %d\n", log_grp->tok_len);
-		// print_ntoken(log_grp->tok_list, log_grp->tok_len, "");
 		fprintf(stderr, "\n");
 		fprintf(stderr, "group needs %d", log_grp->needs);
 		fprintf(stderr, "\n");
