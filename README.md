@@ -8,11 +8,11 @@
 ![Screen Recording 2023-01-31 at 5 26 58 PM](https://user-images.githubusercontent.com/91738456/215821280-0924e297-3077-4a82-865b-f851055e7809.gif)
 
 
-Impementation of clasic bash written completely from scratch as part of 42 Ciriculum (Grade 125/100).
+Implementation of classic bash written completely from scratch as part of 42 Curriculum (Grade 125/100).
 
-This custom shell has most of the features from original bash like custom enironment, builtins, pipes, multiple redirections, logical operators and parenthesis, signal and error handling.
+This custom shell has most of the features from original bash like custom environment, builtins, pipes, multiple redirections, logical operators and parenthesis, signal and error handling.
 
-It works by geting input from user. Then dividing it into tokens. Then parsing it into varios data structures and executing. If parenthesis are used execution is happening in recursion.
+It works by getting input from user. Then dividing it into tokens. Then parsing it into various data structures and executing. If parenthesis are used execution is happening in recursion.
 
 
 # Requierments by the subject
@@ -32,7 +32,7 @@ subject such as ```\``` (backslash) or ```;``` (semicolon).
 - Implement redirections: 
   - ```<``` should redirect input.
   - ```>``` should redirect output.
-  - ```<<``` should be given a delimiter, then read the input until a line containing the delimiter is seen. However, it doesn’t have to update the history!
+  - ```<<``` should be given a delimiter, then read the input until a line containing the delimiter is seen. However, it doesn't have to update the history!
   - ```>>``` should redirect output in append mode.
 - Implement pipes ```|``` . The output of each command in the pipeline is
 connected to the input of the next command via a pipe.
@@ -62,7 +62,7 @@ foreground pipeline.
 # Explanation
 
 ## Lexer
-  First imput passes through lexer where it gets divided into tokens that are stored with co-responding structure
+  First input passes through lexer where it gets divided into tokens that are stored with co-responding structure
   ```c
   
  typedef struct s_token_list
@@ -113,6 +113,6 @@ int create_args(temp_pipe);
    ```
 # Execution
 
-Execution module goes through log_group list execution or skiping its content depending on logical operator it was predicated and if encounter parenthesis goes into recursion. Every logical groups goes through pipe group list contained inside of it executing instructions stored in ```cmd_group```. 
+Execution module goes through log_group list execution or skipping its content depending on logical operator it was predicated and if encounter parenthesis goes into recursion. Every logical groups goes through pipe group list contained inside of it executing instructions stored in ```cmd_group```. 
 
-Functions that executes comand checks whether the command is builtin or not and depending on that it can execute it parent or child process as well as looking for it in the binaries in ```$PATH```.
+Functions that executes command checks whether the command is builtin or not and depending on that it can execute it parent or child process as well as looking for it in the binaries in ```$PATH```.
