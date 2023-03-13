@@ -3,7 +3,7 @@
 </p>
 
 # MINISHELL
-## Quik demo
+## Quick demo
 
 ![Screen Recording 2023-01-31 at 5 26 58 PM](https://user-images.githubusercontent.com/91738456/215821280-0924e297-3077-4a82-865b-f851055e7809.gif)
 
@@ -15,7 +15,7 @@ This custom shell has most of the features from original bash like custom enviro
 It works by getting input from user. Then dividing it into tokens. Then parsing it into various data structures and executing. If parenthesis are used execution is happening in recursion.
 
 
-# Requierments by the subject
+# Requirements by the subject
 
 ## Mandatory
 
